@@ -1,39 +1,67 @@
 using UnityEngine;
-using System.Collections;
 
-// MonoBehaviourはUnityの基底クラス。これを継承しないとGameObjectにアタッチできません。
 public class PlayerController : MonoBehaviour
 {
-    // [SerializeField]をつけると、private変数でもUnityのInspectorから数値を調整できます。
-    // コンパイル不要で調整できるので、開発効率が劇的に上がります。
     [SerializeField] private float moveSpeed = 5.0f;
+    [SerializeField] private float rotateSpeed = 5.0f; // 姿勢制御の速度
 
     private Rigidbody rb;
+    private Vector3 targetUpVector = Vector3.up; // 目標とする「上」方向
 
-    // Start() : C++のコンストラクタのようなもの。ゲーム開始時(または生成時)に1回呼ばれます。
     void Start()
     {
-        // 自分のGameObjectについているRigidbodyコンポーネントを取得してキャッシュする
-        // (毎回GetComponentすると重いため)
         rb = GetComponent<Rigidbody>();
+
+        // GravityManagerのイベントを購読する
+        // 重力が変わったら OnGravityChanged が呼ばれる
+        GravityManager.Instance.OnGravityChanged += OnGravityChanged;
     }
 
-    // FixedUpdate() : 物理演算の計算周期に合わせて呼ばれるループ。
-    // 通常のUpdate()はフレームレート依存なので、物理挙動にはFixedUpdateを使います。
+    // イベントハンドラ
+    private void OnGravityChanged(Vector3 newGravityDir)
+    {
+        // 重力の反対方向が、プレイヤーにとっての「上」
+        targetUpVector = -newGravityDir;
+
+        // 物理挙動のリセット（空中で回転すると変な慣性が残るため少し減衰させる）
+        rb.linearVelocity *= 0.5f; // Unity 6ではvelocityではなくlinearVelocity推奨
+    }
+
     void FixedUpdate()
     {
-        // 入力の取得 (-1.0 ~ 1.0 の値を返す)
-        // 矢印キーやWASDに対応しています。
-        float moveH = Input.GetAxis("Horizontal"); // A/D または ←/→
-        float moveV = Input.GetAxis("Vertical");   // W/S または ↑/↓
+        HandleRotation();
+        HandleMovement();
+    }
 
-        // 力のベクトルを作成 (X, Y, Z)
-        Vector3 movement = new Vector3(moveH, 0.0f, moveV);
+    // クォータニオンによる姿勢制御（ここが技術的アピールポイント）
+    void HandleRotation()
+    {
+        // 現在の「上」方向から、目標の「上」方向への回転差分を計算
+        Quaternion targetRotation = Quaternion.FromToRotation(transform.up, targetUpVector) * transform.rotation;
 
-        // Rigidbodyに力を加える
-        // ForceMode.Force: 継続的な力を加える（車やロケットなど）
-        // ForceMode.VelocityChange: 瞬時に速度を変える（キビキビ動くアクション向け）
-        // 今回は物理パズルらしく慣性を残したいのでAddForceを使います。
-        rb.AddForce(movement * moveSpeed);
+        // Slerp（球体線形補間）を使って滑らかに回転させる
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.fixedDeltaTime);
+    }
+
+    void HandleMovement()
+    {
+        float moveH = Input.GetAxis("Horizontal");
+        float moveV = Input.GetAxis("Vertical");
+
+        // Vector3 movement = new Vector3(moveH, 0.0f, moveV);
+        // rb.AddForce(movement * moveSpeed);
+
+        // // プレイヤーの「右」と「前」方向に力を加える
+        Vector3 force = (transform.right * moveH + transform.forward * moveV) * moveSpeed;
+        rb.AddForce(force);
+    }
+
+    // オブジェクトが破棄されるときにイベント購読を解除（メモリリーク防止）
+    void OnDestroy()
+    {
+        if (GravityManager.Instance != null)
+        {
+            GravityManager.Instance.OnGravityChanged -= OnGravityChanged;
+        }
     }
 }
