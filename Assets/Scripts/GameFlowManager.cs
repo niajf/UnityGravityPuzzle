@@ -1,0 +1,85 @@
+using UnityEngine;
+using UnityEngine.SceneManagement; // シーン遷移に必須
+using System.Collections;          // コルーチン(IEnumerator)に必須
+
+public class GameFlowManager : MonoBehaviour
+{
+    public static GameFlowManager Instance { get; private set; }
+
+    // ゲームの状態を列挙型で管理（ステートマシンの基礎）
+    public enum GameState
+    {
+        Playing,
+        Cleared,
+        GameOver
+    }
+
+    public GameState CurrentState { get; private set; } = GameState.Playing;
+
+    private void Awake()
+    {
+        // 既に存在している場合は自分を削除
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else Instance = this;
+
+        Debug.Log("GameFlowManager initialized.");
+    }
+    // クリア処理
+    public void StageClear()
+    {
+        // 既にクリア済み、またはゲームオーバーなら何もしない（多重判定防止）
+        if (CurrentState != GameState.Playing) return;
+
+        CurrentState = GameState.Cleared;
+        Debug.Log("Stage Clear!! 次のステージへ遷移します...");
+
+        // コルーチンを開始して、遅延処理を行う
+        StartCoroutine(LoadNextSceneRoutine());
+    }
+
+    // ゲームオーバー（落下死など）処理
+    public void GameOver()
+    {
+        if (CurrentState != GameState.Playing) return;
+
+        CurrentState = GameState.GameOver;
+        Debug.Log("Game Over... リトライします。");
+
+        StartCoroutine(RetrySceneRoutine());
+    }
+
+    // 次のシーンを読み込むコルーチン
+    private IEnumerator LoadNextSceneRoutine()
+    {
+        // 2秒間待機する（この間にクリア演出やSEを鳴らす）
+        yield return new WaitForSeconds(2.0f);
+
+        // 現在のシーンのインデックス番号を取得し、+1する
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+
+        // 次のシーンが登録されているかチェック
+        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextSceneIndex);
+        }
+        else
+        {
+            Debug.Log("全ステージクリア！タイトルに戻るなどの処理をここに書く");
+            // SceneManager.LoadScene(0); // 仮に0番(タイトル)に戻す場合
+        }
+    }
+
+    // 現在のシーンを読み込み直す（リトライ）コルーチン
+    private IEnumerator RetrySceneRoutine()
+    {
+        // 落下してすぐ切り替わると不自然なので、1.5秒待つ
+        yield return new WaitForSeconds(1.5f);
+
+        // 現在のシーンを再読み込み
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+}

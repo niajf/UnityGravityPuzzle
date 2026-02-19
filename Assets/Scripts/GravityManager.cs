@@ -18,11 +18,7 @@ public class GravityManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        Instance = this;
-
-        // シーンをまたいで保持
-        DontDestroyOnLoad(gameObject);
+        else Instance = this;
 
         ApplyGravity(GravityDirection);
 

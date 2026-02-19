@@ -2,15 +2,14 @@ using UnityEngine;
 
 public class GoalArea : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // 侵入したのが「Player」タグを持つオブジェクトなら
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Enter Goal.");
+            // ゲーム進行管理クラスにクリアを通知する
+            GameFlowManager.Instance.StageClear();
+        }
     }
 }
