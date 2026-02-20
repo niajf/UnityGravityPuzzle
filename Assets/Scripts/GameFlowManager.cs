@@ -5,6 +5,7 @@ using System.Collections;          // コルーチン(IEnumerator)に必須
 public class GameFlowManager : MonoBehaviour
 {
     public static GameFlowManager Instance { get; private set; }
+    public float CurrentTime { get; private set; } = 0.0f;
 
     // ゲームの状態を列挙型で管理（ステートマシンの基礎）
     public enum GameState
@@ -28,6 +29,14 @@ public class GameFlowManager : MonoBehaviour
 
         Debug.Log("GameFlowManager initialized.");
     }
+
+    void Update()
+    {
+        if (CurrentState == GameState.Playing)
+        {
+            CurrentTime += Time.deltaTime;
+        }
+    }
     // クリア処理
     public void StageClear()
     {
@@ -36,6 +45,9 @@ public class GameFlowManager : MonoBehaviour
 
         CurrentState = GameState.Cleared;
         Debug.Log("Stage Clear!! 次のステージへ遷移します...");
+
+        // クリアタイムをログに出力
+        Debug.Log($"Stage Clear!! タイム: {CurrentTime:F2}秒");
 
         // コルーチンを開始して、遅延処理を行う
         StartCoroutine(LoadNextSceneRoutine());
