@@ -48,12 +48,9 @@ public class PlayerController : MonoBehaviour
         float moveH = Input.GetAxis("Horizontal");
         float moveV = Input.GetAxis("Vertical");
 
-        // Vector3 movement = new Vector3(moveH, 0.0f, moveV);
-        // rb.AddForce(movement * moveSpeed);
-
         // // プレイヤーの「右」と「前」方向に力を加える
         Vector3 force = (transform.right * moveH + transform.forward * moveV) * moveSpeed;
-        rb.AddForce(force);
+        transform.position += force * Time.deltaTime;
     }
 
     // オブジェクトが破棄されるときにイベント購読を解除（メモリリーク防止）
