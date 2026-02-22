@@ -6,7 +6,11 @@ public class GravityManager : MonoBehaviour
     public static GravityManager Instance { get; private set; }
 
     public Vector3 GravityDirection { get; private set; } = Vector3.down;
+
     [SerializeField] private float gravityStrength = 9.81f;
+
+    public Transform target;
+
 
     public event System.Action<Vector3> OnGravityChanged;
 
@@ -27,19 +31,28 @@ public class GravityManager : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current == null) return;
+        if (Keyboard.current == null || target == null) return;
 
-        if (Keyboard.current.iKey.wasPressedThisFrame) ChangeGravity(Vector3.forward);
-        if (Keyboard.current.kKey.wasPressedThisFrame) ChangeGravity(Vector3.back);
-        if (Keyboard.current.jKey.wasPressedThisFrame) ChangeGravity(Vector3.left);
-        if (Keyboard.current.lKey.wasPressedThisFrame) ChangeGravity(Vector3.right);
         if (Keyboard.current.uKey.wasPressedThisFrame) ChangeGravity(Vector3.up);
-        if (Keyboard.current.oKey.wasPressedThisFrame) ChangeGravity(Vector3.down);
+        if (Keyboard.current.jKey.wasPressedThisFrame) ChangeGravity(-target.transform.right);
+        if (Keyboard.current.lKey.wasPressedThisFrame) ChangeGravity(target.transform.right);
     }
 
     public void ChangeGravity(Vector3 newDirection)
     {
-        GravityDirection = newDirection.normalized;
+        float maxDot = 0.0f;
+        Vector3 dir = Vector3.up;
+        var vectors = new Vector3[4] { Vector3.up, Vector3.down, Vector3.right, Vector3.left };
+        for (int i = 0; i < 4; i++)
+        {
+            float dot = Vector3.Dot(vectors[i], newDirection);
+            if (maxDot < dot)
+            {
+                maxDot = dot;
+                dir = vectors[i];
+            }
+        }
+        GravityDirection = dir;
         ApplyGravity(GravityDirection);
 
         OnGravityChanged?.Invoke(GravityDirection);

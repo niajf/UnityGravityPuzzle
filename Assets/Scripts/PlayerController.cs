@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity *= 0.5f; // Unity 6ではvelocityではなくlinearVelocity推奨
     }
 
-    void FixedUpdate()
+    void Update()
     {
         HandleRotation();
         HandleMovement();
@@ -40,15 +41,19 @@ public class PlayerController : MonoBehaviour
         Quaternion targetRotation = Quaternion.FromToRotation(transform.up, targetUpVector) * transform.rotation;
 
         // Slerp（球体線形補間）を使って滑らかに回転させる
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.fixedDeltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+
+        float moveX = Input.GetAxis("Mouse X");
+        if (Mathf.Abs(moveX) > 0.01f)
+        {
+            transform.Rotate(new Vector3(0.0f, moveX, 0.0f));
+        }
     }
 
     void HandleMovement()
     {
         float moveH = Input.GetAxis("Horizontal");
         float moveV = Input.GetAxis("Vertical");
-
-        // // プレイヤーの「右」と「前」方向に力を加える
         Vector3 force = (transform.right * moveH + transform.forward * moveV) * moveSpeed;
         transform.position += force * Time.deltaTime;
     }

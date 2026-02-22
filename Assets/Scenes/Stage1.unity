@@ -636,6 +636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1854400261}
   smoothSpeed: 5
+  sensitivity: 30
   offset: {x: 0, y: 2, z: -12}
 --- !u!1 &1153599084
 GameObject:
@@ -4966,7 +4967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2119a64deda4480f9704e99cb9ef8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 2
   rotateSpeed: 5
 --- !u!114 &1884478323 stripped
 MonoBehaviour:
@@ -5213,6 +5214,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1655942044140551360, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
+      propertyPath: sightRadius
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_Name
       value: Drone
