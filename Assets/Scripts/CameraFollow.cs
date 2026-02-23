@@ -3,50 +3,55 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;
-    public float smoothSpeed = 5.0f; // 追従の遅延速度
-    public float sensitivity = 10.0f;
-    public Vector3 offset = new Vector3(0, 0, -5); // プレイヤー背後からのオフセット
-    private Vector3 upVector = Vector3.up;
 
+    public float smoothSpeed = 5.0f; // 追従の遅延速度
+    public float sensitivity = 1.0f;
+
+    public LayerMask obstacleMask;
+    public float maxDistance = 5.0f;
+    public float minDistance = 0.5f;
+    public float collisionRadius = 0.2f;
+
+    private float currentDistance = 10f;
     private float rotationY = 0.0f;
 
     void Start()
     {
-        GravityManager.Instance.OnGravityChanged += OnGravityChanged;
+        currentDistance = maxDistance;
     }
 
-    void OnGravityChanged(Vector3 newGravityDir)
-    {
-        upVector = -newGravityDir;
-    }
-
-
-    void Update() // 物理演算に合わせてカメラも動かす
+    void LateUpdate() // 物理演算に合わせてカメラも動かす
     {
         if (target == null) return;
 
-        // 1. 位置の計算
-        // ターゲットの「上」方向を基準に、オフセットをローカル座標として適用する
-        // TransformPointは「ローカル座標」を「ワールド座標」に変換する関数
-        // Vector3 desiredPosition = target.TransformPoint(offset);
-        // Vector3 desiredPosition = target.position + offset;
-        transform.position = target.TransformPoint(offset);
+        // プレイヤーとの方向を計算
+        Vector3 desiredDirection = transform.position - target.position;
+        desiredDirection.Normalize();
 
-        // Lerp（線形補間）で滑らかに移動
-        // Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
-        // transform.position = smoothedPosition;
+        float targetDistance = maxDistance;
+
+        // プレイヤーとの間にオブジェクトが存在しないかを確認
+        if (Physics.SphereCast(target.position, collisionRadius, desiredDirection, out RaycastHit hit, maxDistance, obstacleMask))
+        {
+            targetDistance = Mathf.Clamp(hit.distance, minDistance, maxDistance);
+        }
+
+        // オブジェクトが存在する場合、カメラを寄せる
+        if (targetDistance < currentDistance)
+        {
+            currentDistance = targetDistance;
+        }
+
+        // カメラを引くときは、滑らかに移動
+        else
+        {
+            currentDistance = Mathf.Lerp(currentDistance, targetDistance, smoothSpeed * Time.deltaTime);
+        }
+
+        transform.position = target.position + desiredDirection * currentDistance;
 
         // マウスの移動量を取得
-        rotationY += Input.GetAxis("Mouse Y") * sensitivity;
-
-        // 2. 回転の計算
-        // カメラの上方向を、ターゲット（プレイヤー）の上方向に合わせる
-        // LookAtの第2引数で「上方向」を指定できる
-        Vector3 lookTarget = target.position;
-
-        // // 滑らかに回転させるために、LookRotationとSlerpを使う
-        Quaternion targetRotation = Quaternion.LookRotation(lookTarget - transform.position, upVector);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, smoothSpeed * Time.deltaTime);
+        rotationY = Input.GetAxis("Mouse Y") * sensitivity;
 
         // Y方向に一定量移動していれば縦回転
         if (Mathf.Abs(rotationY) > 0.01f)
