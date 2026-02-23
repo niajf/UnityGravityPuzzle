@@ -33,9 +33,11 @@ public class GravityManager : MonoBehaviour
     {
         if (Keyboard.current == null || target == null) return;
 
-        if (Keyboard.current.uKey.wasPressedThisFrame) ChangeGravity(Vector3.up);
-        if (Keyboard.current.jKey.wasPressedThisFrame) ChangeGravity(-target.transform.right);
-        if (Keyboard.current.lKey.wasPressedThisFrame) ChangeGravity(target.transform.right);
+        // 重力の向きを左に変更 
+        if (Input.GetMouseButtonDown(0)) ChangeGravity(-target.transform.right);
+
+        // 重力の向きを右に変更
+        if (Input.GetMouseButtonDown(1)) ChangeGravity(target.transform.right);
     }
 
     public void ChangeGravity(Vector3 newDirection)
