@@ -16,8 +16,8 @@ public class PressureSwitch : MonoBehaviour
             Debug.Log($"{other.name} がスイッチを踏みました！");
             onActivate?.Invoke(); // イベントを実行！
 
-            // スイッチが沈み込むような視覚的フィードバックを入れるとベター
-            transform.localScale = new Vector3(1.5f, 0.05f, 1.5f);
+            // スイッチが沈み込むような視覚的フィードバック
+            transform.position -= new Vector3(0.0f, 0.1f, 0.0f);
         }
     }
 
@@ -28,8 +28,8 @@ public class PressureSwitch : MonoBehaviour
         {
             Debug.Log($"{other.name} がスイッチから降りました。");
             onDeactivate?.Invoke();
-
-            transform.localScale = new Vector3(1.5f, 0.2f, 1.5f);
         }
+
+        transform.position += new Vector3(0.0f, 0.1f, 0.0f);
     }
 }
