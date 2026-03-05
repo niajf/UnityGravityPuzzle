@@ -43,9 +43,10 @@ public class GravityManager : MonoBehaviour
     public void ChangeGravity(Vector3 newDirection)
     {
         float maxDot = 0.0f;
+
         Vector3 dir = Vector3.up;
-        var vectors = new Vector3[4] { Vector3.up, Vector3.down, Vector3.right, Vector3.left };
-        for (int i = 0; i < 4; i++)
+        var vectors = new Vector3[] { Vector3.up, Vector3.down, Vector3.right, Vector3.left, Vector3.forward, Vector3.back };
+        for (int i = 0; i < vectors.Length; i++)
         {
             float dot = Vector3.Dot(vectors[i], newDirection);
             if (maxDot < dot)

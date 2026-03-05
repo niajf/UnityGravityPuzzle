@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
         targetUpVector = -newGravityDir;
 
         // 物理挙動のリセット（空中で回転すると変な慣性が残るため少し減衰させる）
-        rb.linearVelocity *= 0.5f; // Unity 6ではvelocityではなくlinearVelocity推奨
+        rb.linearVelocity *= 0.5f;
     }
 
     void Update()
