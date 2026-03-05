@@ -30,6 +30,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // ゲームオーバーやクリア時には操作を受け付けない
+        if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
+            return;
+
         HandleRotation();
         HandleMovement();
     }

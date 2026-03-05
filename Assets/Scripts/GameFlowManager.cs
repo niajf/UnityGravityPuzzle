@@ -7,6 +7,9 @@ public class GameFlowManager : MonoBehaviour
     public static GameFlowManager Instance { get; private set; }
     public float CurrentTime { get; private set; } = 0.0f;
 
+    // 外部リスナー向けにゲームオーバーを通知するイベント
+    public event System.Action OnGameOverOccurred;
+
     // ゲームの状態を列挙型で管理（ステートマシンの基礎）
     public enum GameState
     {
@@ -61,11 +64,12 @@ public class GameFlowManager : MonoBehaviour
         CurrentState = GameState.GameOver;
         Debug.Log("Game Over... リトライします。");
 
-        StartCoroutine(RetrySceneRoutine());
+        // 購読者に通知（UIなど）
+        OnGameOverOccurred?.Invoke();
     }
 
     // 次のシーンを読み込むコルーチン
-    private IEnumerator LoadNextSceneRoutine()
+    public IEnumerator LoadNextSceneRoutine()
     {
         // 2秒間待機する（この間にクリア演出やSEを鳴らす）
         yield return new WaitForSeconds(2.0f);
@@ -86,11 +90,8 @@ public class GameFlowManager : MonoBehaviour
     }
 
     // 現在のシーンを読み込み直す（リトライ）コルーチン
-    private IEnumerator RetrySceneRoutine()
+    public void RetrySceneRoutine()
     {
-        // 落下してすぐ切り替わると不自然なので、1.5秒待つ
-        yield return new WaitForSeconds(1.5f);
-
         // 現在のシーンを再読み込み
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

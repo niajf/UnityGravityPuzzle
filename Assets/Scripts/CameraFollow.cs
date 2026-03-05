@@ -22,6 +22,12 @@ public class CameraFollow : MonoBehaviour
 
     void LateUpdate() // 物理演算に合わせてカメラも動かす
     {
+
+        // ゲームオーバーやクリア時には操作を受け付けない
+        if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
+            return;
+
+        // 追尾するターゲットが存在しない場合は処理を行わない
         if (target == null) return;
 
         // プレイヤーとの方向を計算

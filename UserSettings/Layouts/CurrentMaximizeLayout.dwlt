@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 17977
+  controlID: 26122
   draggingID: 0
 --- !u!114 &2
 MonoBehaviour:
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 17978
+  controlID: 26123
   draggingID: 0
 --- !u!114 &4
 MonoBehaviour:
@@ -177,7 +177,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 17979
+  controlID: 26124
   draggingID: 0
 --- !u!114 &5
 MonoBehaviour:
@@ -198,8 +198,8 @@ MonoBehaviour:
     y: 0
     width: 212.5
     height: 525.5
-  m_MinSize: {x: 201, y: 226}
-  m_MaxSize: {x: 4001, y: 4026}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -243,10 +243,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 33.5}
-      m_SelectedIDs: 7eaeffff
-      m_LastClickedID: -20866
-      m_ExpandedIDs: 3c58ffff82aeffff1afbffffdea5000000a6000010a6000038a70000a4a80000a8a80000d0a80000
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 540effff3c58ffff82aeffff1afbffffdea5000000a6000010a6000020a7000038a70000a4a80000a8a80000d0a80000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -882,9 +882,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 10.819621, y: 5.619008, z: -6.972601}
+    m_Target: {x: 407.22778, y: 234.41399, z: 10.120896}
     speed: 2
-    m_Value: {x: 10.819621, y: 5.619008, z: -6.972601}
+    m_Value: {x: 407.22778, y: 234.41399, z: 10.120896}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -930,13 +930,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.482
   m_Rotation:
-    m_Target: {x: 0.17709976, y: 0.684957, z: -0.17761995, w: 0.6842336}
+    m_Target: {x: 0.1107398, y: 0.02679853, z: -0.0031974425, w: 0.99361163}
     speed: 2
-    m_Value: {x: 0.1770772, y: 0.68486977, z: -0.17759731, w: 0.6841464}
+    m_Value: {x: 0.110725634, y: 0.026795102, z: -0.0031970337, w: 0.99348456}
   m_Size:
-    m_Target: 8.531304
+    m_Target: 306.59988
     speed: 2
-    m_Value: 8.531304
+    m_Value: 306.59988
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1098,7 +1098,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs
+    - Assets/Scripts
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -1108,7 +1108,7 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/Scripts
   m_LastFoldersGridSize: 16
   m_LastProjectPath: /Users/taiga/UnityGame/GravityPuzzle
   m_LockTracker:
@@ -1116,8 +1116,8 @@ MonoBehaviour:
   m_LastLocalAssetsSearchArea: 1
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 8cab0000
-    m_LastClickedID: 43916
+    m_SelectedIDs: 90ab0000
+    m_LastClickedID: 43920
     m_ExpandedIDs: 0000000012ab000014ab000016ab000018ab0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1173,8 +1173,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 7eaeffff
-    m_LastClickedInstanceID: -20866
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 6295000024b0000092af0000a4ad0000
     m_RenameOverlay:
@@ -1299,8 +1299,8 @@ MonoBehaviour:
     y: 0
     width: 272
     height: 838
-  m_MinSize: {x: 276, y: 76}
-  m_MaxSize: {x: 4001, y: 4026}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}

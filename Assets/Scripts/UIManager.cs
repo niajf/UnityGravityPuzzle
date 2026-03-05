@@ -6,6 +6,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gravityText;
     [SerializeField] private TextMeshProUGUI timeText;
 
+    // Game Over 表示用パネル（エディタでアサイン）
+    [SerializeField] private GameObject gameOverPanel;
+
+    private bool gameOverShown = false;
+
     void Start()
     {
         // 2日目に作った「重力が変わった時」のイベントを購読する
@@ -15,6 +20,16 @@ public class UIManager : MonoBehaviour
             // 初期状態の表示を更新
             UpdateGravityUI(GravityManager.Instance.GravityDirection);
         }
+
+        // ゲームフローのイベントを購読
+        if (GameFlowManager.Instance != null)
+        {
+            GameFlowManager.Instance.OnGameOverOccurred += ShowGameOverUI;
+        }
+
+        // 初期状態では非表示
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
     }
 
     // 重力が変わった瞬間【だけ】呼ばれる（イベント駆動）
@@ -42,12 +57,37 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // ゲームオーバー時に呼び出されるUI表示処理
+    private void ShowGameOverUI()
+    {
+        if (gameOverShown) return;
+        gameOverShown = true;
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(true);
+
+        // 必要なら他のUIも非表示にする
+        // timeText.gameObject.SetActive(false);
+        Debug.Log("UIManager: GameOver画面を表示");
+    }
+
+    // リトライボタンから呼ばせる
+    public void OnRetryButton()
+    {
+        // ボタンを押したら即座にシーンをリロード
+        GameFlowManager.Instance.RetrySceneRoutine();
+    }
+
     void OnDestroy()
     {
         // メモリリーク防止のため、破棄時にイベント購読を解除
         if (GravityManager.Instance != null)
         {
             GravityManager.Instance.OnGravityChanged -= UpdateGravityUI;
+        }
+        if (GameFlowManager.Instance != null)
+        {
+            GameFlowManager.Instance.OnGameOverOccurred -= ShowGameOverUI;
         }
     }
 }
