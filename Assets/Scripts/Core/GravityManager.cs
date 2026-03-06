@@ -31,7 +31,13 @@ public class GravityManager : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current == null || target == null) return;
+        // 入力がない場合は終了
+        if (Keyboard.current == null || target == null)
+            return;
+
+        // ゲーム進行時以外は終了
+        if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
+            return;
 
         // 重力の向きを左に変更 
         if (Input.GetMouseButtonDown(0)) ChangeGravity(-target.transform.right);

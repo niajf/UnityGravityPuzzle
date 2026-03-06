@@ -9,6 +9,9 @@ public class GameFlowManager : MonoBehaviour
 
     // 外部リスナー向けにゲームオーバーを通知するイベント
     public event System.Action OnGameOverOccurred;
+    public event System.Action OnGameClearOccurred;
+
+    [SerializeField] private int titleSceneIndex = 0;
 
     // ゲームの状態を列挙型で管理（ステートマシンの基礎）
     public enum GameState
@@ -47,13 +50,12 @@ public class GameFlowManager : MonoBehaviour
         if (CurrentState != GameState.Playing) return;
 
         CurrentState = GameState.Cleared;
-        Debug.Log("Stage Clear!! 次のステージへ遷移します...");
 
         // クリアタイムをログに出力
         Debug.Log($"Stage Clear!! タイム: {CurrentTime:F2}秒");
 
-        // コルーチンを開始して、遅延処理を行う
-        StartCoroutine(LoadNextSceneRoutine());
+        // 購読者に通知（UIなど）
+        OnGameClearOccurred?.Invoke();
     }
 
     // ゲームオーバー（落下死など）処理
@@ -69,11 +71,8 @@ public class GameFlowManager : MonoBehaviour
     }
 
     // 次のシーンを読み込むコルーチン
-    public IEnumerator LoadNextSceneRoutine()
+    public void LoadNextSceneRoutine()
     {
-        // 2秒間待機する（この間にクリア演出やSEを鳴らす）
-        yield return new WaitForSeconds(2.0f);
-
         // 現在のシーンのインデックス番号を取得し、+1する
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
@@ -85,7 +84,6 @@ public class GameFlowManager : MonoBehaviour
         else
         {
             Debug.Log("全ステージクリア！タイトルに戻るなどの処理をここに書く");
-            // SceneManager.LoadScene(0); // 仮に0番(タイトル)に戻す場合
         }
     }
 
@@ -94,5 +92,10 @@ public class GameFlowManager : MonoBehaviour
     {
         // 現在のシーンを再読み込み
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void backTitleScene()
+    {
+        SceneManager.LoadScene(titleSceneIndex);
     }
 }

@@ -15,7 +15,7 @@ public class AntiGravityObject : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 dir = targetUpVector;
-        if (isReverse) dir *= -1;
+        if (isReverse) dir = -dir;
 
         rb.AddForce(dir * Physics.gravity.magnitude);
     }
