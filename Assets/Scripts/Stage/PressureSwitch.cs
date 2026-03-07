@@ -20,7 +20,7 @@ public class PressureSwitch : MonoBehaviour
             onActivate?.Invoke(); // イベントを実行！
 
             // スイッチが沈み込むような視覚的フィードバック
-            transform.position -= new Vector3(0.0f, 0.1f, 0.0f);
+            transform.position -= 0.1f * transform.up;
         }
     }
 
@@ -33,7 +33,7 @@ public class PressureSwitch : MonoBehaviour
             Debug.Log($"{other.name} がスイッチから降りました。");
             onDeactivate?.Invoke();
 
-            transform.position += new Vector3(0.0f, 0.1f, 0.0f);
+            transform.position += 0.1f * transform.up;
         }
     }
 }
