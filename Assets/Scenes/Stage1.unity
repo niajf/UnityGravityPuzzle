@@ -988,9 +988,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1153599089}
+      - m_Target: {fileID: 1548396833}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnRetryButton
+        m_MethodName: OnRetryButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1260,6 +1260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c779e43cf9fc74a03b0fbfd26ed7a2dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  titleSceneIndex: 0
 --- !u!1 &346639672 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1774531539832379440, guid: db76d552bd2c7479fa75bd9165dce4a9, type: 3}
@@ -4744,7 +4745,7 @@ GameObject:
   - component: {fileID: 1153599085}
   - component: {fileID: 1153599089}
   m_Layer: 5
-  m_Name: UI
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4825,6 +4826,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1548396832}
   - {fileID: 1274658967}
   - {fileID: 1381652322}
   - {fileID: 1327594428}
@@ -4848,12 +4850,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25cd5e53bc0df4e0e8631a91daea7e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityText: {fileID: 1274658968}
-  timeText: {fileID: 1381652323}
-  gameOverPanel: {fileID: 1327594425}
-  gameOverFader: {fileID: 1327594430}
-  gameClearPanel: {fileID: 2132671130}
-  gameClearFader: {fileID: 2132671135}
 --- !u!1 &1171401589
 GameObject:
   m_ObjectHideFlags: 0
@@ -7415,6 +7411,59 @@ Transform:
   - {fileID: 1280065089}
   m_Father: {fileID: 2146123498}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1548396831
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1548396832}
+  - component: {fileID: 1548396833}
+  m_Layer: 5
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1548396832
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548396831}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1153599088}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1548396833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548396831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42892ad8191d4a17af0779034975379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravityDirectionText: {fileID: 1274658968}
+  timerText: {fileID: 1381652323}
+  gameOverPanel: {fileID: 1327594425}
+  gameClearPanel: {fileID: 2132671130}
+  clearTimeText: {fileID: 0}
 --- !u!1001 &1557138870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7556,9 +7605,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1153599089}
+      - m_Target: {fileID: 1548396833}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnExitButton
+        m_MethodName: OnTitleButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9314,9 +9363,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1153599089}
+      - m_Target: {fileID: 1548396833}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnRetryButton
+        m_MethodName: OnRetryButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10046,9 +10095,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1153599089}
+      - m_Target: {fileID: 1548396833}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnExitButton
+        m_MethodName: OnTitleButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11371,7 +11420,7 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 1854400261}
   - {fileID: 346491933}
-  - {fileID: 1153599088}
   - {fileID: 1480218619}
   - {fileID: 688133610}
   - {fileID: 1171401590}
+  - {fileID: 1153599088}
