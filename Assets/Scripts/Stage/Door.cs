@@ -2,17 +2,25 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    [Header("Sounds")]
+    [SerializeField] private AudioClip openDoor;
+    [SerializeField] private AudioClip closeDoor;
+
     public Vector3 openOffset = new Vector3(0, 5, 0); // 開くときの移動量（上に5移動）
     public float openSpeed = 2f; // 開閉のスムーズさ
 
     private Vector3 closedPosition;
     private Vector3 targetPosition;
 
+    private AudioSource audioSource;
+
     void Start()
     {
         // 初期位置を「閉まった状態」として記憶
         closedPosition = transform.position;
         targetPosition = closedPosition;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -27,11 +35,13 @@ public class Door : MonoBehaviour
     public void OpenDoor()
     {
         targetPosition = closedPosition + openOffset;
+        audioSource.PlayOneShot(openDoor);
     }
 
     // 外部から呼ばれる「閉まる」メソッド
     public void CloseDoor()
     {
         targetPosition = closedPosition;
+        audioSource.PlayOneShot(closeDoor);
     }
 }

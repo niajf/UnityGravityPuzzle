@@ -1,4 +1,7 @@
+using System;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,7 +12,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 targetUpVector = Vector3.up;
     private float inputH;
     private float inputV;
-    private float inputMouseX;
 
     void Start()
     {
@@ -30,7 +32,13 @@ public class PlayerController : MonoBehaviour
 
         inputH = Input.GetAxis("Horizontal");
         inputV = Input.GetAxis("Vertical");
-        inputMouseX = Input.GetAxis("Mouse X");
+
+        // カーソル移動の合わせてプレイヤーを回転
+        float mouseX = Input.GetAxis("Mouse X");
+        if (Mathf.Abs(mouseX) > 0.01f)
+        {
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, mouseX, 0f));
+        }
     }
 
     void FixedUpdate()
@@ -51,13 +59,6 @@ public class PlayerController : MonoBehaviour
             Quaternion.FromToRotation(transform.up, targetUpVector) * rb.rotation,
             rotateSpeed * Time.fixedDeltaTime
         );
-
-        // マウスX入力でプレイヤーのローカルY軸を中心に水平回転
-        if (Mathf.Abs(inputMouseX) > 0.01f)
-        {
-            gravityAligned = gravityAligned * Quaternion.Euler(0f, inputMouseX, 0f);
-        }
-
         rb.MoveRotation(gravityAligned);
     }
 

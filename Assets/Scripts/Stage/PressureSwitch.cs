@@ -4,8 +4,8 @@ using UnityEngine.Events; // UnityEventを使うための準備
 public class PressureSwitch : MonoBehaviour
 {
     [Header("Events")]
-    public UnityEvent onActivate;   // 踏まれたときに発火するイベント
-    public UnityEvent onDeactivate; // 離れたときに発火するイベント
+    [SerializeField] private UnityEvent onActivate;   // 踏まれたときに発火するイベント
+    [SerializeField] private UnityEvent onDeactivate; // 離れたときに発火するイベント
 
     private Collider onSwitch = null;
 

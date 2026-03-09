@@ -5,6 +5,7 @@ public class SoundManager : MonoBehaviour
     [Header("Sound files")]
     [SerializeField] private AudioClip gameOver;
     [SerializeField] private AudioClip gameClear;
+    [SerializeField] private AudioClip gravityChange;
 
     AudioSource audioSource;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -16,6 +17,11 @@ public class SoundManager : MonoBehaviour
         {
             GameFlowManager.Instance.OnGameOverOccurred += playGameOver;
             GameFlowManager.Instance.OnGameClearOccurred += playGameClear;
+        }
+
+        if (GravityManager.Instance != null)
+        {
+            GravityManager.Instance.OnGravityChanged += playGravityChange;
         }
     }
 
@@ -29,5 +35,25 @@ public class SoundManager : MonoBehaviour
     {
         if (gameClear == null || audioSource == null) return;
         audioSource.PlayOneShot(gameClear);
+    }
+
+    public void playGravityChange(Vector3 _)
+    {
+        if (gravityChange == null || audioSource == null) return;
+        audioSource.PlayOneShot(gravityChange);
+    }
+
+    void OnDestroy()
+    {
+        if (GameFlowManager.Instance != null)
+        {
+            GameFlowManager.Instance.OnGameOverOccurred -= playGameOver;
+            GameFlowManager.Instance.OnGameClearOccurred -= playGameClear;
+        }
+
+        if (GravityManager.Instance != null)
+        {
+            GravityManager.Instance.OnGravityChanged -= playGravityChange;
+        }
     }
 }
