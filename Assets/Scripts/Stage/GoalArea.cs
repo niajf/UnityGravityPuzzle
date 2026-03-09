@@ -7,8 +7,14 @@ public class GoalArea : MonoBehaviour
         // 侵入したのが「Player」タグを持つオブジェクトなら
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Enter Goal.");
-            // ゲーム進行管理クラスにクリアを通知する
+            GameFlowManager.Instance.StageClear();
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
             GameFlowManager.Instance.StageClear();
         }
     }

@@ -16,8 +16,7 @@ public class PressureSwitch : MonoBehaviour
         if ((other.attachedRigidbody != null) && (onSwitch == null))
         {
             onSwitch = other;
-            Debug.Log($"{other.name} がスイッチを踏みました！");
-            onActivate?.Invoke(); // イベントを実行！
+            onActivate?.Invoke();
 
             // スイッチが沈み込むような視覚的フィードバック
             transform.position -= 0.1f * transform.up;
@@ -30,7 +29,6 @@ public class PressureSwitch : MonoBehaviour
         if (onSwitch == other)
         {
             onSwitch = null;
-            Debug.Log($"{other.name} がスイッチから降りました。");
             onDeactivate?.Invoke();
 
             transform.position += 0.1f * transform.up;

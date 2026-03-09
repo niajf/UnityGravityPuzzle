@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GravityManager : MonoBehaviour
 {
@@ -11,12 +10,10 @@ public class GravityManager : MonoBehaviour
 
     public Transform target;
 
-
     public event System.Action<Vector3> OnGravityChanged;
 
     private void Awake()
     {
-        // 既に存在している場合は自分を削除
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -25,24 +22,17 @@ public class GravityManager : MonoBehaviour
         else Instance = this;
 
         ApplyGravity(GravityDirection);
-
-        Debug.Log("GravityManager initialized");
     }
 
     private void Update()
     {
-        // 入力がない場合は終了
-        if (Keyboard.current == null || target == null)
+        if (target == null)
             return;
 
-        // ゲーム進行時以外は終了
         if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
             return;
 
-        // 重力の向きを左に変更 
         if (Input.GetMouseButtonDown(0)) ChangeGravity(-target.transform.right);
-
-        // 重力の向きを右に変更
         if (Input.GetMouseButtonDown(1)) ChangeGravity(target.transform.right);
     }
 
@@ -65,13 +55,6 @@ public class GravityManager : MonoBehaviour
         ApplyGravity(GravityDirection);
 
         OnGravityChanged?.Invoke(GravityDirection);
-
-        Debug.Log($"Gravity changed to: {GravityDirection}");
-    }
-
-    public Vector3 getGravityDirection()
-    {
-        return GravityDirection;
     }
 
     private void ApplyGravity(Vector3 direction)

@@ -6,7 +6,6 @@ public class GameFlowManager : MonoBehaviour
 {
     public static GameFlowManager Instance { get; private set; }
     public float CurrentTime { get; private set; } = 0.0f;
-
     // 外部リスナー向けにゲームオーバーを通知するイベント
     public event System.Action OnGameOverOccurred;
     public event System.Action OnGameClearOccurred;
@@ -25,6 +24,10 @@ public class GameFlowManager : MonoBehaviour
 
     private void Awake()
     {
+        // フレームレートを固定
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
+
         // 既に存在している場合は自分を削除
         if (Instance != null && Instance != this)
         {
@@ -33,7 +36,6 @@ public class GameFlowManager : MonoBehaviour
         }
         else Instance = this;
 
-        Debug.Log("GameFlowManager initialized.");
     }
 
     void Update()
@@ -51,9 +53,6 @@ public class GameFlowManager : MonoBehaviour
 
         CurrentState = GameState.Cleared;
 
-        // クリアタイムをログに出力
-        Debug.Log($"Stage Clear!! タイム: {CurrentTime:F2}秒");
-
         // 購読者に通知（UIなど）
         OnGameClearOccurred?.Invoke();
     }
@@ -64,7 +63,6 @@ public class GameFlowManager : MonoBehaviour
         if (CurrentState != GameState.Playing) return;
 
         CurrentState = GameState.GameOver;
-        Debug.Log("Game Over... リトライします。");
 
         // 購読者に通知（UIなど）
         OnGameOverOccurred?.Invoke();
@@ -83,7 +81,7 @@ public class GameFlowManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("全ステージクリア！タイトルに戻るなどの処理をここに書く");
+            SceneManager.LoadScene(titleSceneIndex);
         }
     }
 
