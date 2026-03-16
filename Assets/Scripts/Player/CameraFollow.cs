@@ -15,14 +15,20 @@ public class CameraFollow : MonoBehaviour
     private float currentDistance = 10f;
     private float rotationY = 0.0f;
 
+    private float scrollAmount = 1f;
+
     void Start()
     {
         currentDistance = maxDistance;
     }
 
+    void Update()
+    {
+        scrollAmount -= Input.GetAxis("Mouse ScrollWheel");
+    }
+
     void LateUpdate() // 物理演算に合わせてカメラも動かす
     {
-
         // ゲームオーバーやクリア時には操作を受け付けない
         if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
             return;
@@ -54,7 +60,7 @@ public class CameraFollow : MonoBehaviour
             currentDistance = Mathf.Lerp(currentDistance, targetDistance, smoothSpeed * Time.deltaTime);
         }
 
-        transform.position = target.position + desiredDirection * currentDistance;
+        transform.position = target.position + desiredDirection * Mathf.Abs(currentDistance + scrollAmount);
 
         // マウスの移動量を取得
         rotationY = Input.GetAxis("Mouse Y") * sensitivity;
