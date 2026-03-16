@@ -25,6 +25,17 @@ MemoryCaptures/
 Build/
 Builds/
 
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Claude Code
+.claude/
+
+# Unity crash dumps
+mono_crash.mem.*.blob
+
 Assets/kenney_mini-dungeon/
 Assets/kenney_platformer-kit/
 Assets/Models/
