@@ -14,6 +14,9 @@ public class UIManager : MonoBehaviour
     [Header("Clear Panel")]
     [SerializeField] private TextMeshProUGUI clearTimeText;
 
+    [Header("Instruction Panel")]
+    [SerializeField] private CanvasGroup instructionGroup;
+
     private void Start()
     {
         if (GameFlowManager.Instance != null)
@@ -75,11 +78,13 @@ public class UIManager : MonoBehaviour
     private void ShowGameOverPanel()
     {
         if (gameOverPanel != null) gameOverPanel.SetActive(true);
+        if (instructionGroup != null) instructionGroup.alpha = 0;
     }
 
     private void ShowGameClearPanel()
     {
         if (gameClearPanel != null) gameClearPanel.SetActive(true);
+        if (instructionGroup != null) instructionGroup.alpha = 0;
 
         if (clearTimeText != null && GameFlowManager.Instance != null)
         {
