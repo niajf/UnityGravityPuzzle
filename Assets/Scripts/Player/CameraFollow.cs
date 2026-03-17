@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
@@ -12,10 +13,11 @@ public class CameraFollow : MonoBehaviour
     public float minDistance = 0.5f;
     public float collisionRadius = 0.2f;
 
-    private float currentDistance = 10f;
+    private float currentDistance;
     private float rotationY = 0.0f;
 
-    private float scrollAmount = 1f;
+    private bool isZoom = false;
+    private bool isZoomPrev = false;
 
     void Start()
     {
@@ -24,11 +26,25 @@ public class CameraFollow : MonoBehaviour
 
     void Update()
     {
-        scrollAmount -= Input.GetAxis("Mouse ScrollWheel");
+        if (Input.GetMouseButtonDown(2))
+            isZoom = !isZoom;
     }
 
-    void LateUpdate() // 物理演算に合わせてカメラも動かす
+    void LateUpdate()
     {
+
+        if (!isZoom && isZoomPrev)
+        {
+            // transform.position = target.position - target.transform.forward * currentDistance;
+            // transform.rotation = target.transform.rotation;
+
+            transform.SetLocalPositionAndRotation(
+                new Vector3(0f, 0f, -maxDistance),
+                Quaternion.Euler(0f, 0f, 0f)
+            );
+        }
+        isZoomPrev = isZoom;
+
         // ゲームオーバーやクリア時には操作を受け付けない
         if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
             return;
@@ -60,7 +76,10 @@ public class CameraFollow : MonoBehaviour
             currentDistance = Mathf.Lerp(currentDistance, targetDistance, smoothSpeed * Time.deltaTime);
         }
 
-        transform.position = target.position + desiredDirection * Mathf.Abs(currentDistance + scrollAmount);
+        if (isZoom)
+            transform.position = target.position + transform.forward * (currentDistance - 0.5f);
+        else
+            transform.position = target.position + desiredDirection * (currentDistance - 0.5f);
 
         // マウスの移動量を取得
         rotationY = Input.GetAxis("Mouse Y") * sensitivity;
@@ -69,7 +88,8 @@ public class CameraFollow : MonoBehaviour
         if (Mathf.Abs(rotationY) > 0.01f)
         {
             // 回転軸はカメラ自身のX軸
-            transform.RotateAround(target.transform.position, transform.right, -rotationY);
+            // transform.RotateAround(target.transform.position, transform.right, -rotationY);
+            transform.RotateAround(target.transform.position, target.transform.right, -rotationY);
         }
     }
 }
