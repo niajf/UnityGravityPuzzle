@@ -4,9 +4,9 @@ using System.Collections;
 [RequireComponent(typeof(CanvasGroup))]
 public class CanvasGroupFader : MonoBehaviour
 {
-    [SerializeField] private float fadeInDuration = 1.0f;
+    [SerializeField] float fadeInDuration = 1.0f;
 
-    private CanvasGroup canvasGroup;
+    CanvasGroup canvasGroup;
 
     void Awake()
     {

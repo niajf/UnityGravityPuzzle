@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class OutStage : MonoBehaviour
 {
-    private void OnTriggerExit(Collider other)
+    // プレイヤーが離れたら状態をゲームオーバーに変更するメソッド
+    void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {

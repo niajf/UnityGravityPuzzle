@@ -1396,8 +1396,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531158667d5e04b16b25d4a9509e06c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityStrength: 9.81
   target: {fileID: 1854400261}
+  gravityStrength: 9.81
 --- !u!4 &346491933
 Transform:
   m_ObjectHideFlags: 0
@@ -4292,12 +4292,12 @@ MonoBehaviour:
   target: {fileID: 1854400261}
   smoothSpeed: 5
   sensitivity: 1
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
   maxDistance: 15
   minDistance: 1
   collisionRadius: 0.2
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &970608791
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,28 +1,23 @@
-using System;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5.0f;
-    [SerializeField] private float rotateSpeed = 5.0f;
+    [Header("Property")]
+    [SerializeField] float moveSpeed = 5.0f;
+    [SerializeField] float rotateSpeed = 5.0f;
 
-    private Rigidbody rb;
-    private Vector3 targetUpVector = Vector3.up;
-    private float inputH;
-    private float inputV;
+
+    Rigidbody rb;
+    Vector3 targetUpVector = Vector3.up;    // 現在の上方向のベクトル
+    float inputH;   // 水平方向の移動量
+    float inputV;   // 垂直方向の移動量
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        GravityManager.Instance.OnGravityChanged += OnGravityChanged;
-    }
 
-    private void OnGravityChanged(Vector3 newGravityDir)
-    {
-        targetUpVector = -newGravityDir;
-        rb.linearVelocity *= 0.5f;
+        // 重力変更のイベントを購読
+        GravityManager.Instance.OnGravityChanged += OnGravityChanged;
     }
 
     void Update()
@@ -30,6 +25,7 @@ public class PlayerController : MonoBehaviour
         if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
             return;
 
+        // 水平、垂直方向の移動力を取得
         inputH = Input.GetAxis("Horizontal");
         inputV = Input.GetAxis("Vertical");
 
@@ -43,11 +39,19 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        // ゲーム進行中のみ実行
         if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
             return;
 
         HandleRotation();
         HandleMovement();
+    }
+
+    // 重力変更の際、自分自身の上方向を変更
+    void OnGravityChanged(Vector3 newGravityDir)
+    {
+        targetUpVector = -newGravityDir;
+        rb.linearVelocity *= 0.5f;
     }
 
     // クォータニオンによる姿勢制御
@@ -62,12 +66,17 @@ public class PlayerController : MonoBehaviour
         rb.MoveRotation(gravityAligned);
     }
 
+    // 移動制御
     void HandleMovement()
     {
+        // 移動方向のベクトルを計算
         Vector3 move = (transform.right * inputH + transform.forward * inputV) * moveSpeed;
-        rb.MovePosition(rb.position + move * Time.fixedDeltaTime);
+
+        // 座標を直接書き換え
+        transform.position = transform.position + move * Time.fixedDeltaTime;
     }
 
+    // 破壊時にイベントの購読を解除
     void OnDestroy()
     {
         if (GravityManager.Instance != null)

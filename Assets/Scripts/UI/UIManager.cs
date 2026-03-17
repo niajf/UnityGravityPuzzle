@@ -95,12 +95,12 @@ public class UIManager : MonoBehaviour
     // Inspectorのボタンから呼び出す
     public void OnRetryButtonClicked()
     {
-        GameFlowManager.Instance?.RetrySceneRoutine();
+        GameFlowManager.Instance?.RetryScene();
     }
 
     public void OnNextButtonClicked()
     {
-        GameFlowManager.Instance?.LoadNextSceneRoutine();
+        GameFlowManager.Instance?.LoadNextScene();
     }
 
     public void OnTitleButtonClicked()
