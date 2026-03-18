@@ -4,9 +4,10 @@ using System.Collections;
 
 public class TitleManager : MonoBehaviour
 {
-    [SerializeField] private CanvasGroupFader fader;
+    [SerializeField] CanvasGroupFader fader;    //フェードインを行う対象
+    [SerializeField] int initialSceneIndex = 1; // 最初のスタートインデックス
 
-    private bool isTransitioning = false;
+    bool isTransitioning = false;
 
     void Start()
     {
@@ -14,6 +15,7 @@ public class TitleManager : MonoBehaviour
             fader.FadeIn();
     }
 
+    // スタートボタンが押された際の処理
     public void OnStartButton()
     {
         if (isTransitioning) return;
@@ -21,14 +23,16 @@ public class TitleManager : MonoBehaviour
         StartCoroutine(LoadGameScene());
     }
 
-    private IEnumerator LoadGameScene()
+    // 最初のステージを読み込むコルーチン
+    IEnumerator LoadGameScene()
     {
         if (fader != null)
             yield return fader.FadeOutRoutine(0.5f);
 
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(initialSceneIndex);
     }
 
+    // ゲーム終了処理
     public void OnExitButton()
     {
 #if UNITY_EDITOR

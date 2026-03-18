@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class KillZone : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    // プレイヤーが触れたら状態をゲームオーバーに変更するメソッド
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {

@@ -2,26 +2,49 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform target;
+    [Header("Target")]
+    [SerializeField] Transform target;   // 追従する対象
 
-    public float smoothSpeed = 5.0f; // 追従の遅延速度
-    public float sensitivity = 1.0f;
+    [Header("Property")]
+    [SerializeField] float smoothSpeed = 5.0f;  // 追従の遅延速度
+    [SerializeField] float sensitivity = 1.0f;  // 感度
+    [SerializeField] float maxDistance = 5.0f;  // ターゲットとの最大距離
+    [SerializeField] float minDistance = 0.5f;  // ターゲットとの最小距離
+    [SerializeField] float collisionRadius = 0.2f;  //spherecastの球の半径
+    [SerializeField] LayerMask obstacleMask;    // 衝突判定を行わないオブジェクト
 
-    public LayerMask obstacleMask;
-    public float maxDistance = 5.0f;
-    public float minDistance = 0.5f;
-    public float collisionRadius = 0.2f;
+    // カメラの位置と回転情報
+    float currentDistance;  // ターゲットとの距離
+    float rotationY = 0.0f; // ターゲットを中心とした回転角
 
-    private float currentDistance = 10f;
-    private float rotationY = 0.0f;
+    // ズーム処理用フラグ
+    bool isZoom = false;    // ズーム処理判定フラグ
+    bool isZoomPrev = false;    // ズーム解除判定用フラグ
 
     void Start()
     {
         currentDistance = maxDistance;
     }
 
-    void LateUpdate() // 物理演算に合わせてカメラも動かす
+    void Update()
     {
+        if (Input.GetMouseButtonDown(2))
+            isZoom = !isZoom;
+    }
+
+    void LateUpdate()
+    {
+
+        // ズームを解除した場合、カメラを初期位置に戻す
+        if (!isZoom && isZoomPrev)
+        {
+            transform.SetLocalPositionAndRotation(
+                new Vector3(0f, 0f, -maxDistance),
+                Quaternion.Euler(0f, 0f, 0f)
+            );
+        }
+
+        isZoomPrev = isZoom;
 
         // ゲームオーバーやクリア時には操作を受け付けない
         if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
@@ -54,7 +77,10 @@ public class CameraFollow : MonoBehaviour
             currentDistance = Mathf.Lerp(currentDistance, targetDistance, smoothSpeed * Time.deltaTime);
         }
 
-        transform.position = target.position + desiredDirection * currentDistance;
+        if (isZoom)
+            transform.position = target.position + transform.forward * (currentDistance - 0.5f);
+        else
+            transform.position = target.position + desiredDirection * (currentDistance - 0.5f);
 
         // マウスの移動量を取得
         rotationY = Input.GetAxis("Mouse Y") * sensitivity;
@@ -63,7 +89,7 @@ public class CameraFollow : MonoBehaviour
         if (Mathf.Abs(rotationY) > 0.01f)
         {
             // 回転軸はカメラ自身のX軸
-            transform.RotateAround(target.transform.position, transform.right, -rotationY);
+            transform.RotateAround(target.transform.position, target.transform.right, -rotationY);
         }
     }
 }

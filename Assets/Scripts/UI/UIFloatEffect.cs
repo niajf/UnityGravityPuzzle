@@ -3,11 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(RectTransform))]
 public class UIFloatEffect : MonoBehaviour
 {
-    [SerializeField] private float amplitude = 10f;
-    [SerializeField] private float speed = 1.2f;
+    [SerializeField] float amplitude = 10f;
+    [SerializeField] float speed = 1.2f;
 
-    private RectTransform rectTransform;
-    private Vector2 basePosition;
+    RectTransform rectTransform;
+    Vector2 basePosition;
 
     void Awake()
     {

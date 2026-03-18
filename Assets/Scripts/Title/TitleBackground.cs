@@ -7,22 +7,22 @@ using UnityEngine;
 public class TitleBackground : MonoBehaviour
 {
     [Header("Floating Objects")]
-    [SerializeField] private int objectCount = 30;
-    [SerializeField] private float spawnRadius = 18f;
-    [SerializeField] private float minScale = 0.2f;
-    [SerializeField] private float maxScale = 1.2f;
+    [SerializeField] int objectCount = 30;
+    [SerializeField] float spawnRadius = 18f;
+    [SerializeField] float minScale = 0.2f;
+    [SerializeField] float maxScale = 1.2f;
 
     [Header("Animation")]
-    [SerializeField] private float driftSpeed = 0.4f;
-    [SerializeField] private float rotationSpeed = 20f;
+    [SerializeField] float driftSpeed = 0.4f;
+    [SerializeField] float rotationSpeed = 20f;
 
     [Header("Color Theme")]
-    [SerializeField] private Color primaryColor   = new Color(0.15f, 0.4f, 0.9f);   // 青
-    [SerializeField] private Color secondaryColor = new Color(0.4f, 0.15f, 0.85f);  // 紫
-    [SerializeField] private Color accentColor    = new Color(0.6f, 0.75f, 1.0f);   // 淡い青白
+    [SerializeField] Color primaryColor = new Color(0.15f, 0.4f, 0.9f);   // 青
+    [SerializeField] Color secondaryColor = new Color(0.4f, 0.15f, 0.85f);  // 紫
+    [SerializeField] Color accentColor = new Color(0.6f, 0.75f, 1.0f);   // 淡い青白
 
     // 各オブジェクトの漂い設定を保持する内部クラス
-    private class FloatingObject
+    class FloatingObject
     {
         public Transform transform;
         public Vector3 driftAxis;
@@ -33,7 +33,7 @@ public class TitleBackground : MonoBehaviour
         public Vector3 basePosition;
     }
 
-    private FloatingObject[] floatingObjects;
+    FloatingObject[] floatingObjects;
 
     void Start()
     {
@@ -63,7 +63,7 @@ public class TitleBackground : MonoBehaviour
         }
     }
 
-    private FloatingObject CreateFloatingObject(int index)
+    FloatingObject CreateFloatingObject(int index)
     {
         // キューブと球をランダムに選択
         GameObject go;
@@ -104,13 +104,13 @@ public class TitleBackground : MonoBehaviour
         // FloatingObject のデータ設定
         var fo = new FloatingObject
         {
-            transform     = go.transform,
-            basePosition  = pos,
-            driftAxis     = Random.onUnitSphere,
+            transform = go.transform,
+            basePosition = pos,
+            driftAxis = Random.onUnitSphere,
             driftFrequency = Random.Range(0.3f, 0.8f),
-            driftPhase    = Random.Range(0f, Mathf.PI * 2f),
-            rotationAxis  = Random.onUnitSphere,
-            rotSpeed      = Random.Range(-rotationSpeed, rotationSpeed)
+            driftPhase = Random.Range(0f, Mathf.PI * 2f),
+            rotationAxis = Random.onUnitSphere,
+            rotSpeed = Random.Range(-rotationSpeed, rotationSpeed)
         };
 
         return fo;

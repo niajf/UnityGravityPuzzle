@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class GoalArea : MonoBehaviour
 {
-    void OnCollisionEnter(Collision other)
+    // プレイヤーが触れたら状態をゲームクリアに変更するメソッド
+    void OnTriggerEnter(Collider other)
     {
         // 侵入したのが「Player」タグを持つオブジェクトなら
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            Debug.Log("Enter Goal.");
-            // ゲーム進行管理クラスにクリアを通知する
             GameFlowManager.Instance.StageClear();
         }
     }

@@ -42,7 +42,6 @@ public class DroneAI : MonoBehaviour
                 if (CanSeePlayer())
                 {
                     currentState = State.Chase;
-                    Debug.Log("Target Acquired!!");
                 }
                 break;
 
@@ -52,7 +51,6 @@ public class DroneAI : MonoBehaviour
                 if (!CanSeePlayer())
                 {
                     currentState = State.Idle;
-                    Debug.Log("Target Lost...");
                 }
                 break;
         }

@@ -14,38 +14,40 @@ public class ButtonOutlineEffect : MonoBehaviour,
     IPointerDownHandler, IPointerUpHandler
 {
     [Header("Border Colors")]
-    [SerializeField] private Color normalColor = new Color(0f, 0.9f, 1f, 0.5f);  // 通常：薄いシアン
-    [SerializeField] private Color hoverColor = new Color(0f, 0.9f, 1f, 1f);    // ホバー：シアン
-    [SerializeField] private Color pressedColor = new Color(0f, 0.5f, 0.7f, 1f);  // 押下：暗いシアン
+    [SerializeField] Color normalColor = new Color(0f, 0.9f, 1f, 0.5f);  // 通常：薄いシアン
+    [SerializeField] Color hoverColor = new Color(0f, 0.9f, 1f, 1f);    // ホバー：シアン
+    [SerializeField] Color pressedColor = new Color(0f, 0.5f, 0.7f, 1f);  // 押下：暗いシアン
 
     [Header("Border Thickness")]
-    [SerializeField] private float normalThickness = 5f;
-    [SerializeField] private float hoverThickness = 8f;
+    [SerializeField] float normalThickness = 5f;
+    [SerializeField] float hoverThickness = 8f;
 
     [Header("Text Colors")]
-    [SerializeField] private Color textNormalColor = new Color(0.82f, 0.95f, 1f);
-    [SerializeField] private Color textHoverColor = new Color(0f, 0.9f, 1f);
+    [SerializeField] Color textNormalColor = new Color(0.82f, 0.95f, 1f);
+    [SerializeField] Color textHoverColor = new Color(0f, 0.9f, 1f);
 
     [Header("Transition")]
-    [SerializeField] private float transitionDuration = 0.15f;
+    [SerializeField] float transitionDuration = 0.15f;
 
     // 上下左右の枠線 Image
-    private Image borderTop, borderBottom, borderLeft, borderRight;
-    private TextMeshProUGUI label;
-    private Coroutine coroutine;
+    Image borderTop, borderBottom, borderLeft, borderRight;
+    TextMeshProUGUI label;
+    Coroutine coroutine;
 
     void Awake()
     {
         // ボタン本体の背景は透明にする
         GetComponent<Image>().color = Color.clear;
 
+        // 枠の生成
         CreateBorders();
 
         label = GetComponentInChildren<TextMeshProUGUI>();
         if (label != null) label.color = textNormalColor;
     }
 
-    private void CreateBorders()
+    // ボタンの枠を生成するメソッド
+    void CreateBorders()
     {
         borderTop = CreateEdge("Border_Top");
         borderBottom = CreateEdge("Border_Bottom");
@@ -56,8 +58,8 @@ public class ButtonOutlineEffect : MonoBehaviour,
         SetBorderColor(normalColor);
     }
 
-    /// <summary>枠線1辺分の Image オブジェクトを生成する</summary>
-    private Image CreateEdge(string name)
+    //　枠線1辺分の Image オブジェクトを生成する
+    Image CreateEdge(string name)
     {
         var go = new GameObject(name, typeof(RectTransform), typeof(Image));
         go.transform.SetParent(transform, false);
@@ -70,8 +72,8 @@ public class ButtonOutlineEffect : MonoBehaviour,
         return img;
     }
 
-    /// <summary>ボタンの RectTransform に合わせて4辺を配置する</summary>
-    private void ApplyBorderLayout(float thickness)
+    //ボタンの RectTransform に合わせて4辺を配置する
+    void ApplyBorderLayout(float thickness)
     {
         SetEdgeRect(borderTop, new Vector2(0, 1), new Vector2(1, 1),
                     new Vector2(0, -thickness), new Vector2(0, 0));
@@ -86,7 +88,8 @@ public class ButtonOutlineEffect : MonoBehaviour,
                     new Vector2(-thickness, 0), new Vector2(0, 0));
     }
 
-    private void SetEdgeRect(Image img,
+    // 辺の配置
+    void SetEdgeRect(Image img,
         Vector2 anchorMin, Vector2 anchorMax,
         Vector2 offsetMin, Vector2 offsetMax)
     {
@@ -97,7 +100,8 @@ public class ButtonOutlineEffect : MonoBehaviour,
         rt.offsetMax = offsetMax;
     }
 
-    private void SetBorderColor(Color color)
+    // 枠の色の設定
+    void SetBorderColor(Color color)
     {
         borderTop.color = color;
         borderBottom.color = color;
@@ -105,8 +109,7 @@ public class ButtonOutlineEffect : MonoBehaviour,
         borderRight.color = color;
     }
 
-    // ---- ポインターイベント ----
-
+    // ポインターイベント
     public void OnPointerEnter(PointerEventData e) =>
         Transition(hoverColor, hoverThickness, textHoverColor);
 
@@ -126,15 +129,14 @@ public class ButtonOutlineEffect : MonoBehaviour,
             over ? textHoverColor : textNormalColor);
     }
 
-    // ---- トランジション ----
-
-    private void Transition(Color col, float thickness, Color textCol)
+    // トランジション
+    void Transition(Color col, float thickness, Color textCol)
     {
         if (coroutine != null) StopCoroutine(coroutine);
         coroutine = StartCoroutine(DoTransition(col, thickness, textCol));
     }
 
-    private IEnumerator DoTransition(Color targetCol, float targetThickness, Color targetText)
+    IEnumerator DoTransition(Color targetCol, float targetThickness, Color targetText)
     {
         Color startCol = borderTop.color;
         float startThickness = borderTop.rectTransform.offsetMax.x != 0

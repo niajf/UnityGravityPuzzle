@@ -1,19 +1,18 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; // シーン遷移に必須
-using System.Collections;          // コルーチン(IEnumerator)に必須
 
 public class GameFlowManager : MonoBehaviour
 {
-    public static GameFlowManager Instance { get; private set; }
-    public float CurrentTime { get; private set; } = 0.0f;
+    public static GameFlowManager Instance { get; private set; }    // GameFlowManagerのシングルトン
+    public float CurrentTime { get; private set; } = 0.0f;  // タイマー
 
     // 外部リスナー向けにゲームオーバーを通知するイベント
     public event System.Action OnGameOverOccurred;
     public event System.Action OnGameClearOccurred;
 
-    [SerializeField] private int titleSceneIndex = 0;
+    [SerializeField] private int titleSceneIndex = 0;   // タイトルシーンのインデックス
 
-    // ゲームの状態を列挙型で管理（ステートマシンの基礎）
+    // ゲームの状態を列挙型で管理
     public enum GameState
     {
         Playing,
@@ -21,10 +20,14 @@ public class GameFlowManager : MonoBehaviour
         GameOver
     }
 
-    public GameState CurrentState { get; private set; } = GameState.Playing;
+    public GameState CurrentState { get; private set; } = GameState.Playing;    // 現在の状態を管理する変数
 
     private void Awake()
     {
+        // フレームレートを固定
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
+
         // 既に存在している場合は自分を削除
         if (Instance != null && Instance != this)
         {
@@ -32,12 +35,11 @@ public class GameFlowManager : MonoBehaviour
             return;
         }
         else Instance = this;
-
-        Debug.Log("GameFlowManager initialized.");
     }
 
     void Update()
     {
+        // ゲーム進行中ならば、タイマーの時間を増やす
         if (CurrentState == GameState.Playing)
         {
             CurrentTime += Time.deltaTime;
@@ -51,9 +53,6 @@ public class GameFlowManager : MonoBehaviour
 
         CurrentState = GameState.Cleared;
 
-        // クリアタイムをログに出力
-        Debug.Log($"Stage Clear!! タイム: {CurrentTime:F2}秒");
-
         // 購読者に通知（UIなど）
         OnGameClearOccurred?.Invoke();
     }
@@ -64,14 +63,12 @@ public class GameFlowManager : MonoBehaviour
         if (CurrentState != GameState.Playing) return;
 
         CurrentState = GameState.GameOver;
-        Debug.Log("Game Over... リトライします。");
 
-        // 購読者に通知（UIなど）
         OnGameOverOccurred?.Invoke();
     }
 
-    // 次のシーンを読み込むコルーチン
-    public void LoadNextSceneRoutine()
+    // 次のシーンを読み込む
+    public void LoadNextScene()
     {
         // 現在のシーンのインデックス番号を取得し、+1する
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
@@ -83,17 +80,18 @@ public class GameFlowManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("全ステージクリア！タイトルに戻るなどの処理をここに書く");
+            SceneManager.LoadScene(titleSceneIndex);
         }
     }
 
-    // 現在のシーンを読み込み直す（リトライ）コルーチン
-    public void RetrySceneRoutine()
+    // 現在のシーンを読み込み直す（リトライ）
+    public void RetryScene()
     {
         // 現在のシーンを再読み込み
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    // タイトルに戻る
     public void backTitleScene()
     {
         SceneManager.LoadScene(titleSceneIndex);

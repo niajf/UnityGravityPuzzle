@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - MovableBox
+  - AI
   layers:
   - Default
   - TransparentFX

@@ -1,22 +1,19 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GravityManager : MonoBehaviour
 {
-    public static GravityManager Instance { get; private set; }
+    [Header("Target")]
+    [SerializeField] Transform target;  // 重力変更の際に起点となるターゲット
 
-    public Vector3 GravityDirection { get; private set; } = Vector3.down;
+    [Header("Property")]
+    [SerializeField] float gravityStrength = 9.81f;
 
-    [SerializeField] private float gravityStrength = 9.81f;
-
-    public Transform target;
-
-
-    public event System.Action<Vector3> OnGravityChanged;
+    public static GravityManager Instance { get; private set; } // 重力管理のシングルトン
+    public Vector3 GravityDirection { get; private set; } = Vector3.down;   // 現在の重力ベクトル
+    public event System.Action<Vector3> OnGravityChanged;   // 重力変更を通知するイベント
 
     private void Awake()
     {
-        // 既に存在している場合は自分を削除
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -25,32 +22,31 @@ public class GravityManager : MonoBehaviour
         else Instance = this;
 
         ApplyGravity(GravityDirection);
-
-        Debug.Log("GravityManager initialized");
     }
 
     private void Update()
     {
-        // 入力がない場合は終了
-        if (Keyboard.current == null || target == null)
+        // 起点となるターゲットが存在しない場合
+        if (target == null)
             return;
 
-        // ゲーム進行時以外は終了
+        // 現在の状態がゲーム進行中でない場合
         if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
             return;
 
-        // 重力の向きを左に変更 
+        // 左クリックが押された場合、左側面に向かって重力を変更
         if (Input.GetMouseButtonDown(0)) ChangeGravity(-target.transform.right);
 
-        // 重力の向きを右に変更
+        // 右クリックが押された場合、右側面に向かって重力を変更
         if (Input.GetMouseButtonDown(1)) ChangeGravity(target.transform.right);
     }
 
+    // 重力を変更するメソッド
     public void ChangeGravity(Vector3 newDirection)
     {
+        // ターゲットの右or左のローカルベクトルと内積が最大となるワールドベクトルを求める
         float maxDot = 0.0f;
-
-        Vector3 dir = Vector3.up;
+        Vector3 GravityDirection = Vector3.up;
         var vectors = new Vector3[] { Vector3.up, Vector3.down, Vector3.right, Vector3.left, Vector3.forward, Vector3.back };
         for (int i = 0; i < vectors.Length; i++)
         {
@@ -58,22 +54,16 @@ public class GravityManager : MonoBehaviour
             if (maxDot < dot)
             {
                 maxDot = dot;
-                dir = vectors[i];
+                GravityDirection = vectors[i];
             }
         }
-        GravityDirection = dir;
+
+        // 重力を変更し、イベントの購読者に通知
         ApplyGravity(GravityDirection);
-
         OnGravityChanged?.Invoke(GravityDirection);
-
-        Debug.Log($"Gravity changed to: {GravityDirection}");
     }
 
-    public Vector3 getGravityDirection()
-    {
-        return GravityDirection;
-    }
-
+    // 引数の重力を適応するメソッド
     private void ApplyGravity(Vector3 direction)
     {
         Physics.gravity = direction * gravityStrength;
