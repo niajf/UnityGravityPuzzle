@@ -88,7 +88,7 @@ public class UIManager : MonoBehaviour
 
         if (clearTimeText != null && GameFlowManager.Instance != null)
         {
-            clearTimeText.text = $"TIME: {GameFlowManager.Instance.CurrentTime:F2}";
+            clearTimeText.text = $"TIME:{GameFlowManager.Instance.CurrentTime:F2}";
         }
     }
 
