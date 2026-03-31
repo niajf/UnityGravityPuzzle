@@ -11,38 +11,46 @@ public class PlayerController : MonoBehaviour
     Vector3 targetUpVector = Vector3.up;    // 現在の上方向のベクトル
 
     // InputSystem
-    InputAction moveAction;
-    InputAction lookAction;
+    PlayerInputActions inputActions;
+    Vector2 moveInput;
+    Vector2 lookInput;
 
-    // 移動量、回転量
-    Vector2 moveVector;
-    Vector2 lookVector;
-
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
 
         // 重力変更のイベントを購読
         GravityManager.Instance.OnGravityChanged += OnGravityChanged;
 
-        //  Move, Lookのリファレンスを探す
-        moveAction = InputSystem.actions.FindAction("Move");
-        lookAction = InputSystem.actions.FindAction("Look");
+        inputActions = new PlayerInputActions();
     }
+
+    void OnEnable()
+    {
+        inputActions.Player.Enable();
+        inputActions.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
+        inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
+        inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
+    }
+
+    void OnDisable()
+    {
+        inputActions.Player.Disable();
+    }
+
 
     void Update()
     {
         if (GameFlowManager.Instance != null && !GameFlowManager.Instance.IsPlaying)
             return;
 
-        // プレイヤーの移動量を取得
-        moveVector = moveAction.ReadValue<Vector2>();
-
-        // プレイヤーの回転量を取得
-        lookVector = lookAction.ReadValue<Vector2>();
-
         // カーソル移動の合わせてプレイヤーを回転
-        rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, lookVector.x, 0f));
+        if (Mathf.Abs(lookInput.x) > 0.01f)
+        {
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, lookInput.x, 0f));
+        }
+
     }
 
     void FixedUpdate()
@@ -78,7 +86,7 @@ public class PlayerController : MonoBehaviour
     void HandleMovement()
     {
         // 移動方向のベクトルを計算
-        Vector3 move = (transform.right * moveVector.x + transform.forward * moveVector.y) * moveSpeed;
+        Vector3 move = (transform.right * moveInput.x + transform.forward * moveInput.y) * moveSpeed;
 
         // 座標を書き換え
         rb.MovePosition(rb.position + move * Time.fixedDeltaTime);

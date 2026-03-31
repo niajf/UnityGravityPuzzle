@@ -22,23 +22,21 @@ public class CameraFollow : MonoBehaviour
     bool isZoomPrev = false;    // ズーム解除判定用フラグ
 
     // InputSystem
-    InputAction lookAction;
-    InputAction zoomAction;
-    Vector2 lookVector;
+    PlayerInputActions inputActions;
+    Vector2 lookInput;
 
-    void Start()
+    void Awake()
     {
         currentDistance = maxDistance;
-
-        // Look, ToggleZoomのリファレンスを探す
-        lookAction = InputSystem.actions.FindAction("Look");
-        zoomAction = InputSystem.actions.FindAction("ToggleZoom");
+        inputActions = new PlayerInputActions();
     }
 
-    void Update()
+    void OnEnable()
     {
-        if (zoomAction.WasCompletedThisFrame())
-            isZoom = !isZoom;
+        inputActions.Enable();
+        inputActions.Player.ToggleZoom.performed += _ => isZoom = !isZoom;
+        inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
+        inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
     }
 
     void LateUpdate()
@@ -92,9 +90,11 @@ public class CameraFollow : MonoBehaviour
             transform.position = target.position + desiredDirection * (currentDistance - 0.5f);
 
         // マウスの移動量を取得
-        lookVector = lookAction.ReadValue<Vector2>();
+        if (Mathf.Abs(lookInput.y) > 0.01f)
+        {
 
-        // 回転軸はカメラ自身のX軸
-        transform.RotateAround(target.transform.position, target.transform.right, -lookVector.y * sensitivity);
+            // 回転軸はカメラ自身のX軸
+            transform.RotateAround(target.transform.position, target.transform.right, -lookInput.y * sensitivity);
+        }
     }
 }

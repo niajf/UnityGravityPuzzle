@@ -11,14 +11,13 @@ public class GravityManager : MonoBehaviour
     [SerializeField] float gravityStrength = 9.81f;
 
     // InputSystem
-    InputAction leftGravity;
-    InputAction rightGravity;
+    PlayerInputActions inputActions;
 
     public static GravityManager Instance { get; private set; } // 重力管理のシングルトン
     public Vector3 GravityDirection { get; private set; } = Vector3.down;   // 現在の重力ベクトル
     public event System.Action<Vector3> OnGravityChanged;   // 重力変更を通知するイベント
 
-    private void Awake()
+    void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -29,11 +28,22 @@ public class GravityManager : MonoBehaviour
 
         ApplyGravity(GravityDirection);
 
-        leftGravity = InputSystem.actions.FindAction("LeftGravity");
-        rightGravity = InputSystem.actions.FindAction("RightGravity");
+        inputActions = new PlayerInputActions();
     }
 
-    private void Update()
+    void OnEnable()
+    {
+        inputActions.Player.Enable();
+        inputActions.Player.LeftGravity.performed += _ => ChangeGravity(-target.transform.right);
+        inputActions.Player.RightGravity.performed += _ => ChangeGravity(target.transform.right);
+    }
+
+    void OnDisable()
+    {
+        inputActions.Player.Disable();
+    }
+
+    void Update()
     {
         // 起点となるターゲットが存在しない場合
         if (target == null)
@@ -42,12 +52,6 @@ public class GravityManager : MonoBehaviour
         // 現在の状態がゲーム進行中でない場合
         if (GameFlowManager.Instance != null && !GameFlowManager.Instance.IsPlaying)
             return;
-
-        // 左クリックが押された場合、左側面に向かって重力を変更
-        if (leftGravity.WasPressedThisFrame()) ChangeGravity(-target.transform.right);
-
-        // 右クリックが押された場合、右側面に向かって重力を変更
-        if (rightGravity.WasPressedThisFrame()) ChangeGravity(target.transform.right);
     }
 
     // 重力を変更するメソッド
@@ -73,7 +77,7 @@ public class GravityManager : MonoBehaviour
     }
 
     // 引数の重力を適応するメソッド
-    private void ApplyGravity(Vector3 direction)
+    void ApplyGravity(Vector3 direction)
     {
         Physics.gravity = direction * gravityStrength;
     }
