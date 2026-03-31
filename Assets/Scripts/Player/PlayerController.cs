@@ -1,4 +1,6 @@
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,8 +11,9 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody rb;
     Vector3 targetUpVector = Vector3.up;    // 現在の上方向のベクトル
-    float inputH;   // 水平方向の移動量
-    float inputV;   // 垂直方向の移動量
+
+    InputAction moveAction;
+    Vector2 inputVector;
 
     void Start()
     {
@@ -18,6 +21,9 @@ public class PlayerController : MonoBehaviour
 
         // 重力変更のイベントを購読
         GravityManager.Instance.OnGravityChanged += OnGravityChanged;
+
+        //  Moveのリファレンスを探す
+        moveAction = InputSystem.actions.FindAction("Move");
     }
 
     void Update()
@@ -26,8 +32,7 @@ public class PlayerController : MonoBehaviour
             return;
 
         // 水平、垂直方向の移動力を取得
-        inputH = Input.GetAxis("Horizontal");
-        inputV = Input.GetAxis("Vertical");
+        inputVector = moveAction.ReadValue<Vector2>();
 
         // カーソル移動の合わせてプレイヤーを回転
         float mouseX = Input.GetAxis("Mouse X");
@@ -70,7 +75,7 @@ public class PlayerController : MonoBehaviour
     void HandleMovement()
     {
         // 移動方向のベクトルを計算
-        Vector3 move = (transform.right * inputH + transform.forward * inputV) * moveSpeed;
+        Vector3 move = (transform.right * inputVector.x + transform.forward * inputVector.y) * moveSpeed;
 
         // 座標を書き換え
         rb.MovePosition(rb.position + move * Time.fixedDeltaTime);
