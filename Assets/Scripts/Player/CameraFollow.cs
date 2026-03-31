@@ -23,17 +23,21 @@ public class CameraFollow : MonoBehaviour
 
     // InputSystem
     InputAction lookAction;
+    InputAction zoomAction;
     Vector2 lookVector;
 
     void Start()
     {
         currentDistance = maxDistance;
+
+        // Look, ToggleZoomのリファレンスを探す
         lookAction = InputSystem.actions.FindAction("Look");
+        zoomAction = InputSystem.actions.FindAction("ToggleZoom");
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(2))
+        if (zoomAction.WasCompletedThisFrame())
             isZoom = !isZoom;
     }
 

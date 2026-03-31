@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class GravityManager : MonoBehaviour
 {
@@ -7,6 +9,10 @@ public class GravityManager : MonoBehaviour
 
     [Header("Property")]
     [SerializeField] float gravityStrength = 9.81f;
+
+    // InputSystem
+    InputAction leftGravity;
+    InputAction rightGravity;
 
     public static GravityManager Instance { get; private set; } // 重力管理のシングルトン
     public Vector3 GravityDirection { get; private set; } = Vector3.down;   // 現在の重力ベクトル
@@ -22,6 +28,9 @@ public class GravityManager : MonoBehaviour
         else Instance = this;
 
         ApplyGravity(GravityDirection);
+
+        leftGravity = InputSystem.actions.FindAction("LeftGravity");
+        rightGravity = InputSystem.actions.FindAction("RightGravity");
     }
 
     private void Update()
@@ -35,10 +44,10 @@ public class GravityManager : MonoBehaviour
             return;
 
         // 左クリックが押された場合、左側面に向かって重力を変更
-        if (Input.GetMouseButtonDown(0)) ChangeGravity(-target.transform.right);
+        if (leftGravity.WasPressedThisFrame()) ChangeGravity(-target.transform.right);
 
         // 右クリックが押された場合、右側面に向かって重力を変更
-        if (Input.GetMouseButtonDown(1)) ChangeGravity(target.transform.right);
+        if (rightGravity.WasPressedThisFrame()) ChangeGravity(target.transform.right);
     }
 
     // 重力を変更するメソッド

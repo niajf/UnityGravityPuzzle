@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
         // 重力変更のイベントを購読
         GravityManager.Instance.OnGravityChanged += OnGravityChanged;
 
-        //  Moveのリファレンスを探す
+        //  Move, Lookのリファレンスを探す
         moveAction = InputSystem.actions.FindAction("Move");
         lookAction = InputSystem.actions.FindAction("Look");
     }
