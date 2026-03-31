@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour
     [Header("Property")]
     [SerializeField] float moveSpeed = 5.0f;
     [SerializeField] float rotateSpeed = 5.0f;
-
+    [SerializeField] float sensitivity = 2.0f;
 
     Rigidbody rb;
     Vector3 targetUpVector = Vector3.up;    // 現在の上方向のベクトル
@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
+        if (GameFlowManager.Instance != null && !GameFlowManager.Instance.IsPlaying)
             return;
 
         // 水平、垂直方向の移動力を取得
@@ -33,14 +33,14 @@ public class PlayerController : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X");
         if (Mathf.Abs(mouseX) > 0.01f)
         {
-            rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, mouseX, 0f));
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, mouseX * sensitivity, 0f));
         }
     }
 
     void FixedUpdate()
     {
         // ゲーム進行中のみ実行
-        if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
+        if (GameFlowManager.Instance != null && !GameFlowManager.Instance.IsPlaying)
             return;
 
         HandleRotation();
@@ -72,8 +72,8 @@ public class PlayerController : MonoBehaviour
         // 移動方向のベクトルを計算
         Vector3 move = (transform.right * inputH + transform.forward * inputV) * moveSpeed;
 
-        // 座標を直接書き換え
-        transform.position = transform.position + move * Time.fixedDeltaTime;
+        // 座標を書き換え
+        rb.MovePosition(rb.position + move * Time.fixedDeltaTime);
     }
 
     // 破壊時にイベントの購読を解除

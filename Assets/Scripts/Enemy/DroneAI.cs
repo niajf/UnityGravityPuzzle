@@ -32,7 +32,7 @@ public class DroneAI : MonoBehaviour
 
     void Update()
     {
-        if (playerTransform == null || GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing) return;
+        if (playerTransform == null || !GameFlowManager.Instance.IsPlaying) return;
 
         // ステートマシンによる行動の分岐
         switch (currentState)

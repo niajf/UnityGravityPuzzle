@@ -47,7 +47,7 @@ public class CameraFollow : MonoBehaviour
         isZoomPrev = isZoom;
 
         // ゲームオーバーやクリア時には操作を受け付けない
-        if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
+        if (GameFlowManager.Instance != null && !GameFlowManager.Instance.IsPlaying)
             return;
 
         // 追尾するターゲットが存在しない場合は処理を行わない

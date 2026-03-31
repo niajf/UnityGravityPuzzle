@@ -22,6 +22,9 @@ public class GameFlowManager : MonoBehaviour
 
     public GameState CurrentState { get; private set; } = GameState.Playing;    // 現在の状態を管理する変数
 
+    // ゲームが進行中かを確認するヘルパープロパティ
+    public bool IsPlaying => CurrentState == GameState.Playing;
+
     private void Awake()
     {
         // フレームレートを固定
@@ -40,7 +43,7 @@ public class GameFlowManager : MonoBehaviour
     void Update()
     {
         // ゲーム進行中ならば、タイマーの時間を増やす
-        if (CurrentState == GameState.Playing)
+        if (Instance.IsPlaying)
         {
             CurrentTime += Time.deltaTime;
         }
@@ -49,7 +52,7 @@ public class GameFlowManager : MonoBehaviour
     public void StageClear()
     {
         // 既にクリア済み、またはゲームオーバーなら何もしない（多重判定防止）
-        if (CurrentState != GameState.Playing) return;
+        if (!Instance.IsPlaying) return;
 
         CurrentState = GameState.Cleared;
 
@@ -60,7 +63,7 @@ public class GameFlowManager : MonoBehaviour
     // ゲームオーバー（落下死など）処理
     public void GameOver()
     {
-        if (CurrentState != GameState.Playing) return;
+        if (!Instance.IsPlaying) return;
 
         CurrentState = GameState.GameOver;
 
@@ -92,7 +95,7 @@ public class GameFlowManager : MonoBehaviour
     }
 
     // タイトルに戻る
-    public void backTitleScene()
+    public void BackTitleScene()
     {
         SceneManager.LoadScene(titleSceneIndex);
     }

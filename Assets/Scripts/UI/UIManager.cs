@@ -105,6 +105,6 @@ public class UIManager : MonoBehaviour
 
     public void OnTitleButtonClicked()
     {
-        GameFlowManager.Instance?.backTitleScene();
+        GameFlowManager.Instance?.BackTitleScene();
     }
 }

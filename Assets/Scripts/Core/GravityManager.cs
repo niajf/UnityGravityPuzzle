@@ -31,7 +31,7 @@ public class GravityManager : MonoBehaviour
             return;
 
         // 現在の状態がゲーム進行中でない場合
-        if (GameFlowManager.Instance != null && GameFlowManager.Instance.CurrentState != GameFlowManager.GameState.Playing)
+        if (GameFlowManager.Instance != null && !GameFlowManager.Instance.IsPlaying)
             return;
 
         // 左クリックが押された場合、左側面に向かって重力を変更
