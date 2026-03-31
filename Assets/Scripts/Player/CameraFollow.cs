@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class CameraFollow : MonoBehaviour
 
     [Header("Property")]
     [SerializeField] float smoothSpeed = 5.0f;  // 追従の遅延速度
-    [SerializeField] float sensitivity = 1.0f;  // 感度
+    [SerializeField] float sensitivity = 0.2f;  // 感度
     [SerializeField] float maxDistance = 5.0f;  // ターゲットとの最大距離
     [SerializeField] float minDistance = 0.5f;  // ターゲットとの最小距離
     [SerializeField] float collisionRadius = 0.2f;  //spherecastの球の半径
@@ -15,15 +16,19 @@ public class CameraFollow : MonoBehaviour
 
     // カメラの位置と回転情報
     float currentDistance;  // ターゲットとの距離
-    float rotationY = 0.0f; // ターゲットを中心とした回転角
 
     // ズーム処理用フラグ
     bool isZoom = false;    // ズーム処理判定フラグ
     bool isZoomPrev = false;    // ズーム解除判定用フラグ
 
+    // InputSystem
+    InputAction lookAction;
+    Vector2 lookVector;
+
     void Start()
     {
         currentDistance = maxDistance;
+        lookAction = InputSystem.actions.FindAction("Look");
     }
 
     void Update()
@@ -83,13 +88,9 @@ public class CameraFollow : MonoBehaviour
             transform.position = target.position + desiredDirection * (currentDistance - 0.5f);
 
         // マウスの移動量を取得
-        rotationY = Input.GetAxis("Mouse Y") * sensitivity;
+        lookVector = lookAction.ReadValue<Vector2>();
 
-        // Y方向に一定量移動していれば縦回転
-        if (Mathf.Abs(rotationY) > 0.01f)
-        {
-            // 回転軸はカメラ自身のX軸
-            transform.RotateAround(target.transform.position, target.transform.right, -rotationY);
-        }
+        // 回転軸はカメラ自身のX軸
+        transform.RotateAround(target.transform.position, target.transform.right, -lookVector.y * sensitivity);
     }
 }

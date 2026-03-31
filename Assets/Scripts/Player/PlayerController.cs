@@ -1,4 +1,3 @@
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,13 +6,17 @@ public class PlayerController : MonoBehaviour
     [Header("Property")]
     [SerializeField] float moveSpeed = 5.0f;
     [SerializeField] float rotateSpeed = 5.0f;
-    [SerializeField] float sensitivity = 2.0f;
 
     Rigidbody rb;
     Vector3 targetUpVector = Vector3.up;    // 現在の上方向のベクトル
 
+    // InputSystem
     InputAction moveAction;
-    Vector2 inputVector;
+    InputAction lookAction;
+
+    // 移動量、回転量
+    Vector2 moveVector;
+    Vector2 lookVector;
 
     void Start()
     {
@@ -24,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
         //  Moveのリファレンスを探す
         moveAction = InputSystem.actions.FindAction("Move");
+        lookAction = InputSystem.actions.FindAction("Look");
     }
 
     void Update()
@@ -31,15 +35,14 @@ public class PlayerController : MonoBehaviour
         if (GameFlowManager.Instance != null && !GameFlowManager.Instance.IsPlaying)
             return;
 
-        // 水平、垂直方向の移動力を取得
-        inputVector = moveAction.ReadValue<Vector2>();
+        // プレイヤーの移動量を取得
+        moveVector = moveAction.ReadValue<Vector2>();
+
+        // プレイヤーの回転量を取得
+        lookVector = lookAction.ReadValue<Vector2>();
 
         // カーソル移動の合わせてプレイヤーを回転
-        float mouseX = Input.GetAxis("Mouse X");
-        if (Mathf.Abs(mouseX) > 0.01f)
-        {
-            rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, mouseX * sensitivity, 0f));
-        }
+        rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, lookVector.x, 0f));
     }
 
     void FixedUpdate()
@@ -75,7 +78,7 @@ public class PlayerController : MonoBehaviour
     void HandleMovement()
     {
         // 移動方向のベクトルを計算
-        Vector3 move = (transform.right * inputVector.x + transform.forward * inputVector.y) * moveSpeed;
+        Vector3 move = (transform.right * moveVector.x + transform.forward * moveVector.y) * moveSpeed;
 
         // 座標を書き換え
         rb.MovePosition(rb.position + move * Time.fixedDeltaTime);
