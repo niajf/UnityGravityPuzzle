@@ -3,16 +3,9 @@ using UnityEngine.InputSystem;
 
 public class CameraFollow : MonoBehaviour
 {
-    [Header("Target")]
-    [SerializeField] Transform target;   // 追従する対象
+    [SerializeField] PlayerConfig config;
 
-    [Header("Property")]
-    [SerializeField] float smoothSpeed = 5.0f;  // 追従の遅延速度
-    [SerializeField] float sensitivity = 0.2f;  // 感度
-    [SerializeField] float maxDistance = 5.0f;  // ターゲットとの最大距離
-    [SerializeField] float minDistance = 0.5f;  // ターゲットとの最小距離
-    [SerializeField] float collisionRadius = 0.2f;  //spherecastの球の半径
-    [SerializeField] LayerMask obstacleMask;    // 衝突判定を行わないオブジェクト
+    public Transform target;   // 追従する対象
 
     // カメラの位置と回転情報
     float currentDistance;  // ターゲットとの距離
@@ -27,7 +20,7 @@ public class CameraFollow : MonoBehaviour
 
     void Awake()
     {
-        currentDistance = maxDistance;
+        currentDistance = config.maxDistance;
         inputActions = new PlayerInputActions();
     }
 
@@ -46,7 +39,7 @@ public class CameraFollow : MonoBehaviour
         if (!isZoom && isZoomPrev)
         {
             transform.SetLocalPositionAndRotation(
-                new Vector3(0f, 0f, -maxDistance),
+                new Vector3(0f, 0f, -config.maxDistance),
                 Quaternion.Euler(0f, 0f, 0f)
             );
         }
@@ -64,12 +57,12 @@ public class CameraFollow : MonoBehaviour
         Vector3 desiredDirection = transform.position - target.position;
         desiredDirection.Normalize();
 
-        float targetDistance = maxDistance;
+        float targetDistance = config.maxDistance;
 
         // プレイヤーとの間にオブジェクトが存在しないかを確認
-        if (Physics.SphereCast(target.position, collisionRadius, desiredDirection, out RaycastHit hit, maxDistance, obstacleMask))
+        if (Physics.SphereCast(target.position, config.collisionRadius, desiredDirection, out RaycastHit hit, config.maxDistance, config.obstacleMask))
         {
-            targetDistance = Mathf.Clamp(hit.distance, minDistance, maxDistance);
+            targetDistance = Mathf.Clamp(hit.distance, config.minDistance, config.maxDistance);
         }
 
         // オブジェクトが存在する場合、カメラを寄せる
@@ -81,7 +74,7 @@ public class CameraFollow : MonoBehaviour
         // カメラを引くときは、滑らかに移動
         else
         {
-            currentDistance = Mathf.Lerp(currentDistance, targetDistance, smoothSpeed * Time.deltaTime);
+            currentDistance = Mathf.Lerp(currentDistance, targetDistance, config.smoothSpeed * Time.deltaTime);
         }
 
         if (isZoom)
@@ -94,7 +87,7 @@ public class CameraFollow : MonoBehaviour
         {
 
             // 回転軸はカメラ自身のX軸
-            transform.RotateAround(target.transform.position, target.transform.right, -lookInput.y * sensitivity);
+            transform.RotateAround(target.transform.position, target.transform.right, -lookInput.y * config.sensitivity);
         }
     }
 }

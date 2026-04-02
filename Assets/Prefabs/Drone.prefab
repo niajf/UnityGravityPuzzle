@@ -134,8 +134,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6781dd10111b49729d88ac2367bf934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
-  moveSpeed: 3
-  rotationSpeed: 5
-  sightRadius: 10
-  fieldOfView: 60
+  config: {fileID: 11400000, guid: e81aaf35e35ff4573afaeaca4e989e68, type: 2}

@@ -3,9 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Property")]
-    [SerializeField] float moveSpeed = 5.0f;
-    [SerializeField] float rotateSpeed = 5.0f;
+    [SerializeField] PlayerConfig config;
 
     Rigidbody rb;
     Vector3 targetUpVector = Vector3.up;    // 現在の上方向のベクトル
@@ -48,7 +46,7 @@ public class PlayerController : MonoBehaviour
         // カーソル移動の合わせてプレイヤーを回転
         if (Mathf.Abs(lookInput.x) > 0.01f)
         {
-            rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, lookInput.x, 0f));
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, lookInput.x * config.sensitivity, 0f));
         }
 
     }
@@ -77,7 +75,7 @@ public class PlayerController : MonoBehaviour
         Quaternion gravityAligned = Quaternion.Slerp(
             rb.rotation,
             Quaternion.FromToRotation(transform.up, targetUpVector) * rb.rotation,
-            rotateSpeed * Time.fixedDeltaTime
+            config.rotateSpeed * Time.fixedDeltaTime
         );
         rb.MoveRotation(gravityAligned);
     }
@@ -86,7 +84,7 @@ public class PlayerController : MonoBehaviour
     void HandleMovement()
     {
         // 移動方向のベクトルを計算
-        Vector3 move = (transform.right * moveInput.x + transform.forward * moveInput.y) * moveSpeed;
+        Vector3 move = (transform.right * moveInput.x + transform.forward * moveInput.y) * config.moveSpeed;
 
         // 座標を書き換え
         rb.MovePosition(rb.position + move * Time.fixedDeltaTime);

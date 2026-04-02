@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
+[DefaultExecutionOrder(-5)]
 public class GravityManager : MonoBehaviour
 {
     [Header("Target")]

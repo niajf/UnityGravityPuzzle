@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b80a4205dc98d47928b33c0e7e254639, type: 3}
+  m_Name: PlayerConfig
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  rotateSpeed: 5
+  target: {fileID: 4158221820536706942, guid: fe9124e2541a6435f922e0c51a732c2f, type: 3}
+  smoothSpeed: 5
+  sensitivity: 0.2
+  maxDistance: 5
+  minDistance: 0.5
+  collisionRadius: 0.2
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
