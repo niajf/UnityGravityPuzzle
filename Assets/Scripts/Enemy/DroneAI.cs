@@ -10,8 +10,15 @@ public class DroneAI : MonoBehaviour
     }
 
     [SerializeField] DroneConfig config;
+
+    [Header("Attack Settings")]
+    [SerializeField] GameObject projectilePrefab;
+    [SerializeField] float attackInterval = 2.0f;
+    [SerializeField] float projectileSpeed = 10.0f;
+
     Transform playerTransform;
     State currentState = State.Idle;
+    float attackTimer;
 
     void Start()
     {
@@ -21,6 +28,9 @@ public class DroneAI : MonoBehaviour
         {
             playerTransform = playerObj.transform;
         }
+
+        // タイマーの初期化
+        attackTimer = 0f;
     }
 
     void Update()
@@ -49,8 +59,8 @@ public class DroneAI : MonoBehaviour
         }
     }
 
-    // プレイヤーが視界内にいるか（数学的アプローチと物理判定の融合）
-    private bool CanSeePlayer()
+    // プレイヤーが視界内にいるか
+    bool CanSeePlayer()
     {
         // 1. 距離の判定
         Vector3 dirToPlayer = playerTransform.position - transform.position;
@@ -73,7 +83,7 @@ public class DroneAI : MonoBehaviour
         return false;
     }
 
-    private void ChasePlayer()
+    void ChasePlayer()
     {
         // プレイヤーの方向ベクトル
         Vector3 dirToPlayer = (playerTransform.position - transform.position).normalized;
@@ -84,10 +94,18 @@ public class DroneAI : MonoBehaviour
 
         // 前方へ移動する
         transform.position += transform.forward * config.moveSpeed * Time.deltaTime;
+
+        // 弾の発射判定
+        attackTimer += Time.deltaTime;
+        if (attackTimer >= attackInterval)
+        {
+            attackTimer = 0f;
+            FireProjectile();
+        }
     }
 
-    // エディタ上で視界を可視化する（エンジニアとしてのツール作成能力アピール）
-    private void OnDrawGizmosSelected()
+    // エディタ上で視界を可視化する
+    void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, config.sightRadius); // 視界の距離
@@ -97,5 +115,14 @@ public class DroneAI : MonoBehaviour
         Vector3 leftView = Quaternion.Euler(0, -config.fieldOfView * 0.5f, 0) * transform.forward;
         Gizmos.DrawRay(transform.position, rightView * config.sightRadius);
         Gizmos.DrawRay(transform.position, leftView * config.sightRadius);
+    }
+
+    // 弾を発射するメソッド
+    void FireProjectile()
+    {
+        // 毎回Instantiateする（GC負荷が高い）
+        GameObject proj = Instantiate(projectilePrefab, transform.position, transform.rotation);
+        proj.GetComponent<Rigidbody>().linearVelocity = transform.forward * projectileSpeed;
+        Destroy(proj, 3f); // 3秒後に破棄
     }
 }
