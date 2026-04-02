@@ -26680,6 +26680,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4196988782419051000, guid: fe9124e2541a6435f922e0c51a732c2f, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334360833222360282, guid: fe9124e2541a6435f922e0c51a732c2f, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7608805420295530476, guid: fe9124e2541a6435f922e0c51a732c2f, type: 3}
       propertyPath: config
       value: 
