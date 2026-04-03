@@ -12,9 +12,9 @@ public class DroneAI : MonoBehaviour
     [SerializeField] DroneConfig config;
 
     [Header("Attack Settings")]
-    [SerializeField] GameObject projectilePrefab;
     [SerializeField] float attackInterval = 2.0f;
     [SerializeField] float projectileSpeed = 10.0f;
+    [SerializeField] ProjectilePool projectilePool;
 
     Transform playerTransform;
     State currentState = State.Idle;
@@ -120,9 +120,8 @@ public class DroneAI : MonoBehaviour
     // 弾を発射するメソッド
     void FireProjectile()
     {
-        // 毎回Instantiateする（GC負荷が高い）
-        GameObject proj = Instantiate(projectilePrefab, transform.position, transform.rotation);
+        Vector3 desiredDirection = playerTransform.position - transform.position;
+        GameObject proj = projectilePool.GetObject(transform.position, Quaternion.LookRotation(desiredDirection, Vector3.right));
         proj.GetComponent<Rigidbody>().linearVelocity = transform.forward * projectileSpeed;
-        Destroy(proj, 3f); // 3秒後に破棄
     }
 }

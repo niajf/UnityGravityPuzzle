@@ -135,6 +135,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: e81aaf35e35ff4573afaeaca4e989e68, type: 2}
-  projectilePrefab: {fileID: 7610905892242660011, guid: b9ebed68fcddb4bf5b3e2fdc0f67b6cc, type: 3}
   attackInterval: 2
   projectileSpeed: 10
+  projectilePool: {fileID: 7899938809861263659, guid: 8219b4fcef241436b83e002fb949266a, type: 3}

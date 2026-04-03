@@ -12,23 +12,31 @@ public class ProjectilePool : MonoBehaviour
     void Awake()
     {
         pool = new ObjectPool<GameObject>(
-            createFunc: () => Instantiate(prefab),
+            createFunc: CreatePooledItem,
             actionOnGet: obj => obj.SetActive(true),
             actionOnRelease: obj => obj.SetActive(false),
             actionOnDestroy: obj => Destroy(obj),
+            collectionCheck: true,
             defaultCapacity: defaultCapacity,
             maxSize: maxSize
         );
     }
 
-    public GameObject Get(Vector3 position, Quaternion rotation)
+    GameObject CreatePooledItem()
+    {
+        GameObject obj = Instantiate(prefab);
+        obj.GetComponent<Projectile>().Initialize(this);
+        return obj;
+    }
+
+    public GameObject GetObject(Vector3 position, Quaternion rotation)
     {
         GameObject obj = pool.Get();
         obj.transform.SetPositionAndRotation(position, rotation);
         return obj;
     }
 
-    public void Release(GameObject obj)
+    public void ReleaseObject(GameObject obj)
     {
         pool.Release(obj);
     }

@@ -5062,6 +5062,10 @@ PrefabInstance:
       propertyPath: sightRadius
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 1655942044140551360, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
+      propertyPath: projectilePool
+      value: 
+      objectReference: {fileID: 605410628}
     - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_Name
       value: Drone (1)
@@ -5890,6 +5894,14 @@ PrefabInstance:
       propertyPath: sightRadius
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 1655942044140551360, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
+      propertyPath: projectilePool
+      value: 
+      objectReference: {fileID: 605410628}
+    - target: {fileID: 1655942044140551360, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 7610905892242660011, guid: b9ebed68fcddb4bf5b3e2fdc0f67b6cc, type: 3}
     - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_Name
       value: Drone
@@ -7505,6 +7517,53 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 604135761}
   m_Mesh: {fileID: -7018330538815869774, guid: 71e6fb3cd9b1c4f0a9f18dd1f8c237ff, type: 3}
+--- !u!1 &605410627
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 605410629}
+  - component: {fileID: 605410628}
+  m_Layer: 0
+  m_Name: ProjectilePool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &605410628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605410627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db31509fe816b4374ab08a7186eb2efd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 3242209802839920991, guid: b9ebed68fcddb4bf5b3e2fdc0f67b6cc, type: 3}
+  defaultCapacity: 10
+  maxSize: 20
+--- !u!4 &605410629
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605410627}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1720311220}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &606866036
 GameObject:
   m_ObjectHideFlags: 0
@@ -11748,6 +11807,10 @@ PrefabInstance:
       propertyPath: sightRadius
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 1655942044140551360, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
+      propertyPath: projectilePool
+      value: 
+      objectReference: {fileID: 605410628}
     - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_Name
       value: Drone (2)
@@ -12500,6 +12563,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5037481698110513037, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -160
+      objectReference: {fileID: 0}
     - target: {fileID: 5811116675389815334, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
       propertyPath: m_UiScaleMode
       value: 1
@@ -21323,6 +21390,7 @@ Transform:
   - {fileID: 254701730}
   - {fileID: 1780204139}
   - {fileID: 574705815}
+  - {fileID: 605410629}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1720824118
@@ -24121,6 +24189,10 @@ PrefabInstance:
       propertyPath: sightRadius
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 1655942044140551360, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
+      propertyPath: projectilePool
+      value: 
+      objectReference: {fileID: 605410628}
     - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_Name
       value: Drone (3)
