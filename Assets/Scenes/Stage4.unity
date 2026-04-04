@@ -45308,12 +45308,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42892ad8191d4a17af0779034975379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HUDGroup: {fileID: 8368857080895339795}
   gravityDirectionText: {fileID: 7778591678666758526}
   timerText: {fileID: 6034909951354805131}
-  gameOverPanel: {fileID: 6441947747897043127}
-  gameClearPanel: {fileID: 3215786693425492123}
+  gameOverPanel: {fileID: 1112974279318419047}
+  gameClearPanel: {fileID: 3712289184100111714}
   clearTimeText: {fileID: 7088305683366321192}
-  instructionGroup: {fileID: 8368857080895339795}
 --- !u!114 &5687846425025552425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45590,7 +45590,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 510767e9a81e2418aa04856731fe5e88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeInDuration: 1
 --- !u!1 &6237858939010197522
 GameObject:
   m_ObjectHideFlags: 0
@@ -46364,7 +46363,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 510767e9a81e2418aa04856731fe5e88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeInDuration: 1
 --- !u!222 &8212559177005218450
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -1,23 +1,23 @@
 using UnityEngine;
 using TMPro;
+using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 
 public class UIManager : MonoBehaviour
 {
     [Header("HUD")]
-    [SerializeField] private TextMeshProUGUI gravityDirectionText;
-    [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] CanvasGroup HUDGroup;
+    [SerializeField] TextMeshProUGUI gravityDirectionText;
+    [SerializeField] TextMeshProUGUI timerText;
 
     [Header("Panels")]
-    [SerializeField] private GameObject gameOverPanel;
-    [SerializeField] private GameObject gameClearPanel;
+    [SerializeField] CanvasGroup gameOverPanel;
+    [SerializeField] CanvasGroup gameClearPanel;
 
     [Header("Clear Panel")]
-    [SerializeField] private TextMeshProUGUI clearTimeText;
+    [SerializeField] TextMeshProUGUI clearTimeText;
 
-    [Header("Instruction Panel")]
-    [SerializeField] private CanvasGroup instructionGroup;
-
-    private void Start()
+    void Start()
     {
         if (GameFlowManager.Instance != null)
         {
@@ -31,11 +31,11 @@ public class UIManager : MonoBehaviour
             UpdateGravityText(GravityManager.Instance.GravityDirection);
         }
 
-        if (gameOverPanel != null) gameOverPanel.SetActive(false);
-        if (gameClearPanel != null) gameClearPanel.SetActive(false);
+        if (gameOverPanel != null) gameOverPanel.gameObject.SetActive(false);
+        if (gameClearPanel != null) gameClearPanel.gameObject.SetActive(false);
     }
 
-    private void Update()
+    void Update()
     {
         if (timerText != null && GameFlowManager.Instance != null)
         {
@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
         if (GameFlowManager.Instance != null)
         {
@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void UpdateGravityText(Vector3 direction)
+    void UpdateGravityText(Vector3 direction)
     {
         if (gravityDirectionText == null) return;
 
@@ -75,36 +75,55 @@ public class UIManager : MonoBehaviour
         gravityDirectionText.text = $"GRAVITY: {label}";
     }
 
-    private void ShowGameOverPanel()
+    async void ShowGameOverPanel()
     {
-        if (gameOverPanel != null) gameOverPanel.SetActive(true);
-        if (instructionGroup != null) instructionGroup.alpha = 0;
+        if (HUDGroup != null) HUDGroup.alpha = 0;
+
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.gameObject.SetActive(true);
+            await CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, 1.0f);
+        }
     }
 
-    private void ShowGameClearPanel()
+    async void ShowGameClearPanel()
     {
-        if (gameClearPanel != null) gameClearPanel.SetActive(true);
-        if (instructionGroup != null) instructionGroup.alpha = 0;
+        if (HUDGroup != null) HUDGroup.alpha = 0;
 
         if (clearTimeText != null && GameFlowManager.Instance != null)
         {
             clearTimeText.text = $"TIME:{GameFlowManager.Instance.CurrentTime:F2}";
         }
+
+        if (gameClearPanel != null)
+        {
+            gameClearPanel.gameObject.SetActive(true);
+            await CanvasGroupFader.FadeAsync(gameClearPanel, 0.0f, 1.0f, 1.0f);
+        }
     }
 
     // Inspectorのボタンから呼び出す
-    public void OnRetryButtonClicked()
+    public async void OnRetryButtonClicked()
     {
+        await AllFadeOutAsync();
         GameFlowManager.Instance?.RetryScene();
     }
 
-    public void OnNextButtonClicked()
+    public async void OnNextButtonClicked()
     {
+        await AllFadeOutAsync();
         GameFlowManager.Instance?.LoadNextScene();
     }
 
-    public void OnTitleButtonClicked()
+    public async void OnTitleButtonClicked()
     {
+        await AllFadeOutAsync();
         GameFlowManager.Instance?.BackTitleScene();
+    }
+
+    async UniTask AllFadeOutAsync()
+    {
+        await CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, 1.0f);
+        await CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, 1.0f);
     }
 }

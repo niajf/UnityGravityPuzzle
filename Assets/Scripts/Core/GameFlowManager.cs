@@ -1,5 +1,8 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // シーン遷移に必須
+using UnityEngine.SceneManagement;  // シーン遷移に必須
+using Cysharp.Threading.Tasks;      // 非同期処理用
+using System.Threading;
+using System.Threading.Tasks;
 
 public class GameFlowManager : MonoBehaviour
 {
@@ -25,7 +28,9 @@ public class GameFlowManager : MonoBehaviour
     // ゲームが進行中かを確認するヘルパープロパティ
     public bool IsPlaying => CurrentState == GameState.Playing;
 
-    private void Awake()
+    CancellationTokenSource cts;
+
+    void Awake()
     {
         // フレームレートを固定
         QualitySettings.vSyncCount = 0;
@@ -38,6 +43,8 @@ public class GameFlowManager : MonoBehaviour
             return;
         }
         else Instance = this;
+
+        cts = new CancellationTokenSource();
     }
 
     void Update()
@@ -70,33 +77,34 @@ public class GameFlowManager : MonoBehaviour
         OnGameOverOccurred?.Invoke();
     }
 
-    // 次のシーンを読み込む
-    public void LoadNextScene()
+    // 次のシーンを読むこむ
+    public async UniTask LoadNextScene()
     {
-        // 現在のシーンのインデックス番号を取得し、+1する
+        // シーン読み込み（非同期）
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        nextSceneIndex = nextSceneIndex < SceneManager.sceneCountInBuildSettings
+            ? nextSceneIndex
+            : titleSceneIndex;
 
-        // 次のシーンが登録されているかチェック
-        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(nextSceneIndex);
-        }
-        else
-        {
-            SceneManager.LoadScene(titleSceneIndex);
-        }
+        await SceneManager.LoadSceneAsync(nextSceneIndex).WithCancellation(destroyCancellationToken);
     }
 
     // 現在のシーンを読み込み直す（リトライ）
-    public void RetryScene()
+    public async UniTask RetryScene()
     {
         // 現在のシーンを再読み込み
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        await SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex).WithCancellation(destroyCancellationToken);
     }
 
     // タイトルに戻る
-    public void BackTitleScene()
+    public async UniTask BackTitleScene()
     {
-        SceneManager.LoadScene(titleSceneIndex);
+        await SceneManager.LoadSceneAsync(titleSceneIndex).WithCancellation(destroyCancellationToken);
+    }
+
+    void OnDestroy()
+    {
+        cts?.Cancel();
+        cts?.Dispose();
     }
 }

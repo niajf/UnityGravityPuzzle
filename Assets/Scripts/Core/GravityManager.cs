@@ -42,7 +42,8 @@ public class GravityManager : MonoBehaviour
         inputActions.Player.Disable();
     }
 
-    void Update()
+    // 重力を変更するメソッド
+    public void ChangeGravity(Vector3 newDirection)
     {
         // 起点となるターゲットが存在しない場合
         if (target == null)
@@ -51,11 +52,8 @@ public class GravityManager : MonoBehaviour
         // 現在の状態がゲーム進行中でない場合
         if (GameFlowManager.Instance != null && !GameFlowManager.Instance.IsPlaying)
             return;
-    }
 
-    // 重力を変更するメソッド
-    public void ChangeGravity(Vector3 newDirection)
-    {
+
         // ターゲットの右or左のローカルベクトルと内積が最大となるワールドベクトルを求める
         float maxDot = 0.0f;
         Vector3 GravityDirection = Vector3.up;

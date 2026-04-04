@@ -2812,6 +2812,7 @@ MonoBehaviour:
   timerText: {fileID: 7974917894377231168}
   gameOverPanel: {fileID: 7208770324945182844}
   gameClearPanel: {fileID: 1282421741959133264}
+  gameClearGroup: {fileID: 1074218918017768873}
   clearTimeText: {fileID: 6859667522951927011}
   instructionGroup: {fileID: 5280734578900514264}
 --- !u!1 &6556313696210421987

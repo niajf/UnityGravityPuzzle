@@ -478,7 +478,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 510767e9a81e2418aa04856731fe5e88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeInDuration: 1
 --- !u!1 &849628859
 GameObject:
   m_ObjectHideFlags: 0
@@ -931,7 +930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4bdb7b877a034c7d875561db15ac76e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fader: {fileID: 548960093}
+  fader: {fileID: 548960089}
   initialSceneIndex: 1
 --- !u!4 &1528911861
 Transform:
