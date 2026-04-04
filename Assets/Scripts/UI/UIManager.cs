@@ -82,7 +82,7 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null)
         {
             gameOverPanel.gameObject.SetActive(true);
-            await CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, 1.0f);
+            await CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, 1.0f);
         }
     }
 
