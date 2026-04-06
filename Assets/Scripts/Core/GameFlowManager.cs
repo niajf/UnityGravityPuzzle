@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;  // シーン遷移に必須
 using Cysharp.Threading.Tasks;      // 非同期処理用
-using System.Threading;
-using System.Threading.Tasks;
 
 public class GameFlowManager : MonoBehaviour
 {
@@ -28,8 +26,6 @@ public class GameFlowManager : MonoBehaviour
     // ゲームが進行中かを確認するヘルパープロパティ
     public bool IsPlaying => CurrentState == GameState.Playing;
 
-    CancellationTokenSource cts;
-
     void Awake()
     {
         // フレームレートを固定
@@ -43,8 +39,6 @@ public class GameFlowManager : MonoBehaviour
             return;
         }
         else Instance = this;
-
-        cts = new CancellationTokenSource();
     }
 
     void Update()
@@ -100,11 +94,5 @@ public class GameFlowManager : MonoBehaviour
     public async UniTask BackTitleScene()
     {
         await SceneManager.LoadSceneAsync(titleSceneIndex).WithCancellation(destroyCancellationToken);
-    }
-
-    void OnDestroy()
-    {
-        cts?.Cancel();
-        cts?.Dispose();
     }
 }

@@ -92,7 +92,7 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null)
         {
             gameOverPanel.gameObject.SetActive(true);
-            await CanvasGroupFader.FadeAsync(gameOverPanel, 0.0f, 1.0f, fadeInTime);
+            await CanvasGroupFader.FadeAsync(gameOverPanel, 0.0f, 1.0f, fadeInTime, destroyCancellationToken);
         }
     }
 
@@ -113,7 +113,7 @@ public class UIManager : MonoBehaviour
         if (gameClearPanel != null)
         {
             gameClearPanel.gameObject.SetActive(true);
-            await CanvasGroupFader.FadeAsync(gameClearPanel, 0.0f, 1.0f, fadeInTime);
+            await CanvasGroupFader.FadeAsync(gameClearPanel, 0.0f, 1.0f, fadeInTime, destroyCancellationToken);
         }
     }
 
@@ -126,7 +126,8 @@ public class UIManager : MonoBehaviour
     async UniTask OnRetryButtonClickedAsync()
     {
         await AllFadeOutAsync();
-        GameFlowManager.Instance?.RetryScene();
+        if (GameFlowManager.Instance != null)
+            await GameFlowManager.Instance.RetryScene();
     }
 
     public void OnNextButtonClicked()
@@ -137,7 +138,8 @@ public class UIManager : MonoBehaviour
     async UniTask OnNextButtonClickedAsycn()
     {
         await AllFadeOutAsync();
-        GameFlowManager.Instance?.LoadNextScene();
+        if (GameFlowManager.Instance != null)
+            await GameFlowManager.Instance.LoadNextScene();
     }
 
     public void OnTitleButtonClicked()
@@ -148,14 +150,15 @@ public class UIManager : MonoBehaviour
     async UniTask OnTitleButtonClickedAsync()
     {
         await AllFadeOutAsync();
-        GameFlowManager.Instance?.BackTitleScene();
+        if (GameFlowManager.Instance != null)
+            await GameFlowManager.Instance.BackTitleScene();
     }
 
     async UniTask AllFadeOutAsync()
     {
         await UniTask.WhenAll(
-            CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, fadeOutTime),
-            CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, fadeOutTime)
+            CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, fadeOutTime, destroyCancellationToken),
+            CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, fadeOutTime, destroyCancellationToken)
         );
     }
 }
