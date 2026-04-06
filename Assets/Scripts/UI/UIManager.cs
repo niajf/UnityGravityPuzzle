@@ -75,7 +75,12 @@ public class UIManager : MonoBehaviour
         gravityDirectionText.text = $"GRAVITY: {label}";
     }
 
-    async void ShowGameOverPanel()
+    void ShowGameOverPanel()
+    {
+        ShowGameOverPanelAsync().Forget();
+    }
+
+    async UniTask ShowGameOverPanelAsync()
     {
         if (HUDGroup != null) HUDGroup.alpha = 0;
 
@@ -86,7 +91,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    async void ShowGameClearPanel()
+    void ShowGameClearPanel()
+    {
+        ShowGameClearPanelAsync().Forget();
+    }
+
+    async UniTask ShowGameClearPanelAsync()
     {
         if (HUDGroup != null) HUDGroup.alpha = 0;
 
@@ -103,19 +113,34 @@ public class UIManager : MonoBehaviour
     }
 
     // Inspectorのボタンから呼び出す
-    public async void OnRetryButtonClicked()
+    public void OnRetryButtonClicked()
+    {
+        OnRetryButtonClickedAsync().Forget();
+    }
+
+    async UniTask OnRetryButtonClickedAsync()
     {
         await AllFadeOutAsync();
         GameFlowManager.Instance?.RetryScene();
     }
 
-    public async void OnNextButtonClicked()
+    public void OnNextButtonClicked()
+    {
+        OnNextButtonClickedAsycn().Forget();
+    }
+
+    async UniTask OnNextButtonClickedAsycn()
     {
         await AllFadeOutAsync();
         GameFlowManager.Instance?.LoadNextScene();
     }
 
-    public async void OnTitleButtonClicked()
+    public void OnTitleButtonClicked()
+    {
+        OnTitleButtonClickedAsync().Forget();
+    }
+
+    async UniTask OnTitleButtonClickedAsync()
     {
         await AllFadeOutAsync();
         GameFlowManager.Instance?.BackTitleScene();
@@ -123,7 +148,9 @@ public class UIManager : MonoBehaviour
 
     async UniTask AllFadeOutAsync()
     {
-        await CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, 1.0f);
-        await CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, 1.0f);
+        await UniTask.WhenAll(
+            CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, 1.0f),
+            CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, 1.0f)
+        );
     }
 }
