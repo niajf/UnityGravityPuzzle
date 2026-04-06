@@ -17,6 +17,11 @@ public class UIManager : MonoBehaviour
     [Header("Clear Panel")]
     [SerializeField] TextMeshProUGUI clearTimeText;
 
+    [Header("Fade Setting")]
+    [SerializeField] float fadeInTime = 0.2f;
+    [SerializeField] float fadeOutTime = 1.0f;
+
+
     void Start()
     {
         if (GameFlowManager.Instance != null)
@@ -87,7 +92,7 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null)
         {
             gameOverPanel.gameObject.SetActive(true);
-            await CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, 1.0f);
+            await CanvasGroupFader.FadeAsync(gameOverPanel, 0.0f, 1.0f, fadeInTime);
         }
     }
 
@@ -108,7 +113,7 @@ public class UIManager : MonoBehaviour
         if (gameClearPanel != null)
         {
             gameClearPanel.gameObject.SetActive(true);
-            await CanvasGroupFader.FadeAsync(gameClearPanel, 0.0f, 1.0f, 1.0f);
+            await CanvasGroupFader.FadeAsync(gameClearPanel, 0.0f, 1.0f, fadeInTime);
         }
     }
 
@@ -149,8 +154,8 @@ public class UIManager : MonoBehaviour
     async UniTask AllFadeOutAsync()
     {
         await UniTask.WhenAll(
-            CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, 1.0f),
-            CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, 1.0f)
+            CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, fadeOutTime),
+            CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, fadeOutTime)
         );
     }
 }
