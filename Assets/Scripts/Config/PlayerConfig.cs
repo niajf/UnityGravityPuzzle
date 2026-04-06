@@ -8,7 +8,6 @@ public class PlayerConfig : ScriptableObject
     public float rotateSpeed = 5.0f;
 
     [Header("Camera")]
-    public Transform target;   // 追従する対象
     public float smoothSpeed = 5.0f;  // 追従の遅延速度
     public float sensitivity = 0.2f;  // 感度
     public float maxDistance = 5.0f;  // ターゲットとの最大距離
