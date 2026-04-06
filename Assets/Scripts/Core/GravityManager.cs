@@ -9,9 +9,6 @@ public class GravityManager : MonoBehaviour
     [Header("Property")]
     [SerializeField] float gravityStrength = 9.81f;
 
-    // InputSystem
-    PlayerInputActions inputActions;
-
     public static GravityManager Instance { get; private set; } // 重力管理のシングルトン
     public Vector3 GravityDirection { get; private set; } = Vector3.down;   // 現在の重力ベクトル
     public event System.Action<Vector3> OnGravityChanged;   // 重力変更を通知するイベント
@@ -27,19 +24,20 @@ public class GravityManager : MonoBehaviour
 
         ApplyGravity(GravityDirection);
 
-        inputActions = new PlayerInputActions();
     }
 
     void OnEnable()
     {
-        inputActions.Player.Enable();
+        var inputActions = InputManager.Instance.Actions;
         inputActions.Player.LeftGravity.performed += _ => ChangeGravity(-target.transform.right);
         inputActions.Player.RightGravity.performed += _ => ChangeGravity(target.transform.right);
     }
 
     void OnDisable()
     {
-        inputActions.Player.Disable();
+        var inputActions = InputManager.Instance.Actions;
+        inputActions.Player.LeftGravity.performed -= _ => ChangeGravity(-target.transform.right);
+        inputActions.Player.RightGravity.performed -= _ => ChangeGravity(target.transform.right);
     }
 
     // 重力を変更するメソッド

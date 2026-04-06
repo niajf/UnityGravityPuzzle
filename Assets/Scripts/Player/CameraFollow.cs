@@ -15,22 +15,27 @@ public class CameraFollow : MonoBehaviour
     bool isZoom = false;    // ズーム処理判定フラグ
     bool isZoomPrev = false;    // ズーム解除判定用フラグ
 
-    // InputSystem
-    PlayerInputActions inputActions;
     Vector2 lookInput;
 
     void Awake()
     {
         currentDistance = config.maxDistance;
-        inputActions = new PlayerInputActions();
     }
 
     void OnEnable()
     {
-        inputActions.Enable();
+        var inputActions = InputManager.Instance.Actions;
         inputActions.Player.ToggleZoom.performed += _ => isZoom = !isZoom;
         inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
+    }
+
+    void OnDisable()
+    {
+        var inputActions = InputManager.Instance.Actions;
+        inputActions.Player.ToggleZoom.performed -= _ => isZoom = !isZoom;
+        inputActions.Player.Look.performed -= ctx => lookInput = ctx.ReadValue<Vector2>();
+        inputActions.Player.Look.canceled -= ctx => lookInput = Vector2.zero;
     }
 
     void LateUpdate()

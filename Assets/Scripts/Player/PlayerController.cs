@@ -8,8 +8,6 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     Vector3 targetUpVector = Vector3.up;    // 現在の上方向のベクトル
 
-    // InputSystem
-    PlayerInputActions inputActions;
     Vector2 moveInput;
     Vector2 lookInput;
 
@@ -19,13 +17,11 @@ public class PlayerController : MonoBehaviour
 
         // 重力変更のイベントを購読
         GravityManager.Instance.OnGravityChanged += OnGravityChanged;
-
-        inputActions = new PlayerInputActions();
     }
 
     void OnEnable()
     {
-        inputActions.Player.Enable();
+        var inputActions = InputManager.Instance.Actions;
         inputActions.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
         inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
@@ -34,7 +30,11 @@ public class PlayerController : MonoBehaviour
 
     void OnDisable()
     {
-        inputActions.Player.Disable();
+        var inputActions = InputManager.Instance.Actions;
+        inputActions.Player.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
+        inputActions.Player.Move.canceled -= ctx => moveInput = Vector2.zero;
+        inputActions.Player.Look.performed -= ctx => lookInput = ctx.ReadValue<Vector2>();
+        inputActions.Player.Look.canceled -= ctx => lookInput = Vector2.zero;
     }
 
 
