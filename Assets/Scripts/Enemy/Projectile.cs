@@ -20,7 +20,7 @@ public class Projectile : MonoBehaviour
         timer += Time.deltaTime;
         if (timer >= lifetime)
         {
-            ReturedPool(gameObject);
+            ReturnToPool(gameObject);
         }
     }
 
@@ -29,11 +29,11 @@ public class Projectile : MonoBehaviour
         // プレイヤー以外との衝突ならば、オブジェクトを返却
         if (!other.CompareTag("AI") && !other.CompareTag("Stage"))
         {
-            ReturedPool(gameObject);
+            ReturnToPool(gameObject);
         }
     }
 
-    void ReturedPool(GameObject ob)
+    void ReturnToPool(GameObject ob)
     {
         if (isReturned) return;  // 二重返却を防止
         isReturned = true;
