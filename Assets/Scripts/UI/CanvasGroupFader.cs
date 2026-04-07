@@ -14,8 +14,10 @@ public class CanvasGroupFader : MonoBehaviour
             elapsed += Time.deltaTime;
             group.alpha = Mathf.Lerp(from, to, elapsed / duration);
             await UniTask.Yield(cancellationToken);
+            if (group == null) return;  // await 後に破棄されていた場合は即終了
         }
 
-        group.alpha = to;
+        if (group != null)
+            group.alpha = to;
     }
 }

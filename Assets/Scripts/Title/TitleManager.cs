@@ -12,7 +12,7 @@ public class TitleManager : MonoBehaviour
     async void Start()
     {
         if (fader != null)
-            await CanvasGroupFader.FadeAsync(fader, 0.0f, 1.0f, 1.0f);
+            await CanvasGroupFader.FadeAsync(fader, 0.0f, 1.0f, 1.0f, destroyCancellationToken);
     }
 
     // スタートボタンが押された際の処理
