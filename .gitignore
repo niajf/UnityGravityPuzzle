@@ -1,0 +1,18 @@
+# Unity generated
+Library/
+Temp/
+Logs/
+UserSettings/
+*.csproj
+*.sln
+
+# OS
+.DS_Store
+**/.DS_Store
+
+# VSCode
+.vscode/
+
+# Assets (third-party)
+Assets/kenney_mini-dungeon/
+Assets/kenney_platformer-kit/
