@@ -54,7 +54,7 @@ public class GravityManager : MonoBehaviour
 
         // ターゲットの右or左のローカルベクトルと内積が最大となるワールドベクトルを求める
         float maxDot = 0.0f;
-        Vector3 GravityDirection = Vector3.up;
+        Vector3 bestDirection = Vector3.up;
         var vectors = new Vector3[] { Vector3.up, Vector3.down, Vector3.right, Vector3.left, Vector3.forward, Vector3.back };
         for (int i = 0; i < vectors.Length; i++)
         {
@@ -62,11 +62,12 @@ public class GravityManager : MonoBehaviour
             if (maxDot < dot)
             {
                 maxDot = dot;
-                GravityDirection = vectors[i];
+                bestDirection = vectors[i];
             }
         }
 
         // 重力を変更し、イベントの購読者に通知
+        this.GravityDirection = bestDirection;
         ApplyGravity(GravityDirection);
         OnGravityChanged?.Invoke(GravityDirection);
     }
