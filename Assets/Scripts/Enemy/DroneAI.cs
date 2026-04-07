@@ -12,8 +12,6 @@ public class DroneAI : MonoBehaviour
     [SerializeField] DroneConfig config;
 
     [Header("Attack Settings")]
-    [SerializeField] float attackInterval = 2.0f;
-    [SerializeField] float projectileSpeed = 10.0f;
     [SerializeField] ProjectilePool projectilePool;
 
     Transform playerTransform;
@@ -97,7 +95,7 @@ public class DroneAI : MonoBehaviour
 
         // 弾の発射判定
         attackTimer += Time.deltaTime;
-        if (attackTimer >= attackInterval)
+        if (attackTimer >= config.attackInterval)
         {
             attackTimer = 0f;
             FireProjectile();
@@ -122,6 +120,6 @@ public class DroneAI : MonoBehaviour
     {
         Vector3 desiredDirection = playerTransform.position - transform.position;
         GameObject proj = projectilePool.GetObject(transform.position, Quaternion.LookRotation(desiredDirection, Vector3.right));
-        proj.GetComponent<Rigidbody>().linearVelocity = transform.forward * projectileSpeed;
+        proj.GetComponent<Rigidbody>().linearVelocity = transform.forward * config.projectileSpeed;
     }
 }

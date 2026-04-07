@@ -10,4 +10,8 @@ public class DroneConfig : ScriptableObject
     [Header("Sensor Settings")]
     public float sightRadius = 10.0f;   // 追跡範囲
     public float fieldOfView = 60.0f;   // 視野
+
+    [Header("Projectile Setting")]
+    public float attackInterval = 2.0f;
+    public float projectileSpeed = 10.0f;
 }
