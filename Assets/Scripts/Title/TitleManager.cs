@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using System;
 
 public class TitleManager : MonoBehaviour
 {
@@ -19,22 +16,32 @@ public class TitleManager : MonoBehaviour
     }
 
     // スタートボタンが押された際の処理
-    public async void OnStartButton()
+    public void OnStartButton()
+    {
+        OnStartButtonAsync().Forget();
+    }
+
+    async UniTask OnStartButtonAsync()
     {
         if (isTransitioning) return;
         isTransitioning = true;
 
         if (fader != null)
         {
-            await CanvasGroupFader.FadeAsync(fader, 1.0f, 0.0f, 1.0f);
+            await CanvasGroupFader.FadeAsync(fader, 1.0f, 0.0f, 1.0f, destroyCancellationToken);
             await SceneManager.LoadSceneAsync(initialSceneIndex);
         }
     }
 
     // ゲーム終了処理
-    public async void OnExitButton()
+    public void OnExitButton()
     {
-        await CanvasGroupFader.FadeAsync(fader, 1.0f, 0.0f, 1.0f);
+        OnExitButtonAsync().Forget();
+    }
+
+    async UniTask OnExitButtonAsync()
+    {
+        await CanvasGroupFader.FadeAsync(fader, 1.0f, 0.0f, 1.0f, destroyCancellationToken);
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
