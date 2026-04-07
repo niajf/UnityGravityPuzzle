@@ -16,30 +16,31 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-        if (pool == null) return;
-        if (isReturned) return;
-
         // 一定時間経過したら、オブジェクトをプールへ返却
         timer += Time.deltaTime;
         if (timer >= lifetime)
         {
-            ReleaseObject(gameObject);
+            ReturedPool(gameObject);
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        // プレイヤー意外との衝突ならば、オブジェクトを返却
-        if (!other.CompareTag("Player"))
+        // プレイヤー以外との衝突ならば、オブジェクトを返却
+        if (!other.CompareTag("AI") && !other.CompareTag("Stage"))
         {
-            ReleaseObject(gameObject);
+            ReturedPool(gameObject);
         }
     }
 
-    void ReleaseObject(GameObject ob)
+    void ReturedPool(GameObject ob)
     {
+        if (isReturned) return;  // 二重返却を防止
         isReturned = true;
-        timer = 0f;
-        pool.ReleaseObject(ob);
+
+        if (pool != null)
+            pool.ReleaseObject(ob);
+        else
+            ob.SetActive(false);
     }
 }

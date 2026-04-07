@@ -3628,7 +3628,7 @@ GameObject:
   - component: {fileID: 300547312}
   m_Layer: 0
   m_Name: Arrows
-  m_TagString: Untagged
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4446,6 +4446,7 @@ GameObject:
   - component: {fileID: 346491933}
   - component: {fileID: 346491932}
   - component: {fileID: 346491934}
+  - component: {fileID: 346491935}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -4495,6 +4496,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   titleSceneIndex: 0
+--- !u!114 &346491935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346491931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e69c0acc82d49e58d20d40408a6d38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &351321905
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5069,6 +5082,10 @@ PrefabInstance:
     - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_Name
       value: Drone (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
+      propertyPath: m_TagString
+      value: AI
       objectReference: {fileID: 0}
     - target: {fileID: 5983343478197563043, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5905,6 +5922,10 @@ PrefabInstance:
     - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_Name
       value: Drone
+      objectReference: {fileID: 0}
+    - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
+      propertyPath: m_TagString
+      value: AI
       objectReference: {fileID: 0}
     - target: {fileID: 5983343478197563043, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7529,7 +7550,7 @@ GameObject:
   - component: {fileID: 605410628}
   m_Layer: 0
   m_Name: ProjectilePool
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7562,7 +7583,7 @@ Transform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1720311220}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &606866036
 GameObject:
@@ -8713,7 +8734,7 @@ GameObject:
   - component: {fileID: 679598091}
   m_Layer: 0
   m_Name: KillZone
-  m_TagString: Untagged
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9000,9 +9021,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 688133610}
+  - component: {fileID: 688133611}
   m_Layer: 0
   m_Name: Stage
-  m_TagString: Untagged
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9026,6 +9048,18 @@ Transform:
   - {fileID: 300547312}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &688133611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688133609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 526d4ef69f2a74709ae8532d5b8699ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &691165654
 GameObject:
   m_ObjectHideFlags: 0
@@ -11104,7 +11138,7 @@ GameObject:
   - component: {fileID: 888058330}
   m_Layer: 0
   m_Name: Spikes
-  m_TagString: Untagged
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11814,6 +11848,10 @@ PrefabInstance:
     - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_Name
       value: Drone (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
+      propertyPath: m_TagString
+      value: AI
       objectReference: {fileID: 0}
     - target: {fileID: 5983343478197563043, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14578,9 +14616,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1171401590}
+  - component: {fileID: 1171401591}
   m_Layer: 0
   m_Name: Gimmick
-  m_TagString: Untagged
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14603,6 +14642,18 @@ Transform:
   - {fileID: 888058330}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1171401591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171401589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 526d4ef69f2a74709ae8532d5b8699ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1171720438 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 211997808957248963, guid: c2e09a6632d9e4542afcb937fa49129b, type: 3}
@@ -18147,7 +18198,7 @@ GameObject:
   - component: {fileID: 1478246789}
   m_Layer: 0
   m_Name: Crates
-  m_TagString: Untagged
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19487,7 +19538,7 @@ GameObject:
   - component: {fileID: 1630759855}
   m_Layer: 0
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21393,9 +21444,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1720311220}
+  - component: {fileID: 1720311221}
   m_Layer: 0
   m_Name: Enemyes
-  m_TagString: Untagged
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21417,9 +21469,20 @@ Transform:
   - {fileID: 254701730}
   - {fileID: 1780204139}
   - {fileID: 574705815}
-  - {fileID: 605410629}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1720311221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720311219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 526d4ef69f2a74709ae8532d5b8699ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1720824118
 GameObject:
   m_ObjectHideFlags: 0
@@ -24224,6 +24287,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Drone (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5755028269946717804, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
     - target: {fileID: 5983343478197563043, guid: 8875de05ae79a4baf843ec426e78e02e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -20
@@ -26635,7 +26702,7 @@ GameObject:
   - component: {fileID: 543450653408879503}
   m_Layer: 0
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26923,6 +26990,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goal
       objectReference: {fileID: 0}
+    - target: {fileID: 7385787439840791686, guid: da94d40f8ebb5492b91d3200a348dbab, type: 3}
+      propertyPath: m_TagString
+      value: Stage
+      objectReference: {fileID: 0}
     - target: {fileID: 8187896472747767272, guid: da94d40f8ebb5492b91d3200a348dbab, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -26980,4 +27051,5 @@ SceneRoots:
   - {fileID: 688133610}
   - {fileID: 1250091933}
   - {fileID: 1720311220}
+  - {fileID: 605410629}
   - {fileID: 2711266036435832171}

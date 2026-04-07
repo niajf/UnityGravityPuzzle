@@ -39,11 +39,11 @@ public class GravityManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _onLeftGravity  = _ => ChangeGravity(-target.transform.right);
+        _onLeftGravity = _ => ChangeGravity(-target.transform.right);
         _onRightGravity = _ => ChangeGravity(target.transform.right);
 
         var inputActions = InputManager.Instance.Actions;
-        inputActions.Player.LeftGravity.performed  += _onLeftGravity;
+        inputActions.Player.LeftGravity.performed += _onLeftGravity;
         inputActions.Player.RightGravity.performed += _onRightGravity;
     }
 
@@ -52,7 +52,7 @@ public class GravityManager : MonoBehaviour
     {
         if (InputManager.Instance == null) return;
         var inputActions = InputManager.Instance.Actions;
-        inputActions.Player.LeftGravity.performed  -= _onLeftGravity;
+        inputActions.Player.LeftGravity.performed -= _onLeftGravity;
         inputActions.Player.RightGravity.performed -= _onRightGravity;
     }
 

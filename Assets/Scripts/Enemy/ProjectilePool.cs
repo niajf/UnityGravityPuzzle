@@ -33,6 +33,7 @@ public class ProjectilePool : MonoBehaviour
     {
         GameObject obj = pool.Get();
         obj.transform.SetPositionAndRotation(position, rotation);
+        obj.GetComponent<Projectile>().Initialize(this);
         return obj;
     }
 

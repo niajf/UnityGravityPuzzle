@@ -6,6 +6,8 @@ TagManager:
   tags:
   - MovableBox
   - AI
+  - Projectile
+  - Stage
   layers:
   - Default
   - TransparentFX
