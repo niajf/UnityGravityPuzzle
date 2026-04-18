@@ -172,7 +172,8 @@ Assets/Scripts/
 ├── Config/
 │   ├── PlayerConfig.cs        # プレイヤーパラメータ (ScriptableObject)
 │   ├── DroneConfig.cs         # ドローンパラメータ (ScriptableObject)
-│   └── StageData.cs           # ステージデータ (ScriptableObject)
+│   ├── StageData.cs           # ステージデータ (ScriptableObject)
+│   └── UIConfig.cs            # UIパラメータ (ScriptableObject)
 ├── UI/
 │   ├── UIManager.cs           # HUD・パネル制御
 │   ├── CanvasGroupFader.cs    # フェードイン/アウト
