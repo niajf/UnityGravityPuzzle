@@ -1,8 +1,6 @@
 using UnityEngine;
 using TMPro;
 using Cysharp.Threading.Tasks;
-using System.Threading.Tasks;
-using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 
 /// <summary>
 /// ゲーム中の HUD・ゲームオーバー／クリアパネルを管理する UI コントローラー。

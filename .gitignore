@@ -16,3 +16,6 @@ UserSettings/
 # Assets (third-party)
 Assets/kenney_mini-dungeon/
 Assets/kenney_platformer-kit/
+
+# build
+GravityPuzzle*/*
