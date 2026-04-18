@@ -3899,8 +3899,7 @@ MonoBehaviour:
   missionPanel: {fileID: 7794812098464092650}
   pausePanel: {fileID: 2144605879197329728}
   clearTimeText: {fileID: 2139235902421630611}
-  fadeInTime: 0.2
-  fadeOutTime: 1
+  config: {fileID: 11400000, guid: 76cc8e097ac46494b9f56ff628effb6c, type: 2}
 --- !u!1 &8172998403421353962
 GameObject:
   m_ObjectHideFlags: 0

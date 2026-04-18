@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using Cysharp.Threading.Tasks;
 using System.Threading.Tasks;
+using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 
 /// <summary>
 /// ゲーム中の HUD・ゲームオーバー／クリアパネルを管理する UI コントローラー。
@@ -23,10 +24,8 @@ public class UIManager : MonoBehaviour
     [Header("Clear Text")]
     [SerializeField] TextMeshProUGUI clearTimeText;
 
-    [Header("Fade Setting")]
-    [SerializeField] float fadeInTime = 0.2f;
-    [SerializeField] float fadeOutTime = 1.0f;
-
+    [Header("Config")]
+    [SerializeField] UIConfig config;
 
     void Start()
     {
@@ -110,7 +109,7 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null)
         {
             gameOverPanel.gameObject.SetActive(true);
-            await CanvasGroupFader.FadeAsync(gameOverPanel, 0.0f, 1.0f, fadeInTime, destroyCancellationToken);
+            await CanvasGroupFader.FadeAsync(gameOverPanel, 0.0f, 1.0f, config.commonFadeInTime, destroyCancellationToken);
         }
     }
 
@@ -133,7 +132,7 @@ public class UIManager : MonoBehaviour
         if (gameClearPanel != null)
         {
             gameClearPanel.gameObject.SetActive(true);
-            await CanvasGroupFader.FadeAsync(gameClearPanel, 0.0f, 1.0f, fadeInTime, destroyCancellationToken);
+            await CanvasGroupFader.FadeAsync(gameClearPanel, 0.0f, 1.0f, config.commonFadeInTime, destroyCancellationToken);
         }
     }
 
@@ -154,7 +153,7 @@ public class UIManager : MonoBehaviour
         if (pausePanel != null)
         {
             pausePanel.gameObject.SetActive(true);
-            await CanvasGroupFader.FadeAsync(pausePanel, 0.0f, 1.0f, 0.2f, destroyCancellationToken);
+            await CanvasGroupFader.FadeAsync(pausePanel, 0.0f, 1.0f, config.pauseFadeInTime, destroyCancellationToken);
         }
     }
 
@@ -164,7 +163,7 @@ public class UIManager : MonoBehaviour
 
         if (pausePanel != null)
         {
-            await CanvasGroupFader.FadeAsync(pausePanel, 1.0f, 0.0f, 0.2f, destroyCancellationToken);
+            await CanvasGroupFader.FadeAsync(pausePanel, 1.0f, 0.0f, config.pauseFadeOutTime, destroyCancellationToken);
             pausePanel.gameObject.SetActive(false);
         }
 
@@ -178,13 +177,13 @@ public class UIManager : MonoBehaviour
         missionPanel.gameObject.SetActive(false);
 
         // 指定時間後に表示
-        await UniTask.Delay(500);
+        await UniTask.Delay(config.untilShowTime);
         missionPanel.gameObject.SetActive(true);
-        await CanvasGroupFader.FadeAsync(missionPanel, 0.0f, 1.0f, 0.1f, destroyCancellationToken);
+        await CanvasGroupFader.FadeAsync(missionPanel, 0.0f, 1.0f, config.missionPanelFadeInTime, destroyCancellationToken);
 
         // 指定時間後に非表示
-        await UniTask.Delay(2000);
-        await CanvasGroupFader.FadeAsync(missionPanel, 1.0f, 0.0f, 1.0f, destroyCancellationToken);
+        await UniTask.Delay(config.displayTime);
+        await CanvasGroupFader.FadeAsync(missionPanel, 1.0f, 0.0f, config.missionPanelFadeOutTime, destroyCancellationToken);
         missionPanel.gameObject.SetActive(false);
     }
 
@@ -231,9 +230,9 @@ public class UIManager : MonoBehaviour
     async UniTask AllFadeOutAsync()
     {
         await UniTask.WhenAll(
-            CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, fadeOutTime, destroyCancellationToken),
-            CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, fadeOutTime, destroyCancellationToken),
-            CanvasGroupFader.FadeAsync(pausePanel, 1.0f, 0.0f, fadeOutTime, destroyCancellationToken)
+            CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, config.commonFadeOutTime, destroyCancellationToken),
+            CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, config.commonFadeOutTime, destroyCancellationToken),
+            CanvasGroupFader.FadeAsync(pausePanel, 1.0f, 0.0f, config.commonFadeOutTime, destroyCancellationToken)
         );
     }
 }
