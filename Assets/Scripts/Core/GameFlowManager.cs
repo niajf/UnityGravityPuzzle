@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Cysharp.Threading.Tasks;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// ゲームの進行状態（プレイ中・クリア・ゲームオーバー）とシーン遷移を一元管理するシングルトン。
@@ -14,6 +15,7 @@ public class GameFlowManager : MonoBehaviour
     // 外部リスナー向けにゲームオーバーを通知するイベント
     public event System.Action OnGameOverOccurred;
     public event System.Action OnGameClearOccurred;
+    public event System.Action OnPauseOccurred;
 
     [SerializeField] private int titleSceneIndex = 0;   // タイトルシーンのインデックス
 
@@ -22,13 +24,17 @@ public class GameFlowManager : MonoBehaviour
     {
         Playing,
         Cleared,
-        GameOver
+        GameOver,
+        Pause
     }
 
     public GameState CurrentState { get; private set; } = GameState.Playing;    // 現在の状態を管理する変数
 
     // ゲームが進行中かを確認するヘルパープロパティ
     public bool IsPlaying => CurrentState == GameState.Playing;
+
+    // ポーズ中かを確認するヘルパープロパティ
+    public bool IsPause => CurrentState == GameState.Pause;
 
     void Awake()
     {
@@ -43,6 +49,21 @@ public class GameFlowManager : MonoBehaviour
             return;
         }
         else Instance = this;
+    }
+
+    void OnEnable()
+    {
+        if (InputManager.Instance == null) return;
+        var inputActions = InputManager.Instance.Actions;
+        inputActions.Player.Pose.performed += Pose;
+    }
+
+    // 無効化時に入力イベントの購読を解除する
+    void OnDisable()
+    {
+        if (InputManager.Instance == null) return;
+        var inputActions = InputManager.Instance.Actions;
+        inputActions.Player.Pose.performed -= Pose;
     }
 
     void Update()
@@ -73,6 +94,17 @@ public class GameFlowManager : MonoBehaviour
         CurrentState = GameState.GameOver;
 
         OnGameOverOccurred?.Invoke();
+    }
+
+    // ポーズ処理
+    void Pose(InputAction.CallbackContext _)
+    {
+        if (CurrentState != GameState.Pause)
+            CurrentState = GameState.Pause;
+        else
+            CurrentState = GameState.Playing;
+
+        OnPauseOccurred?.Invoke();
     }
 
     // 次のシーンを読み込む（最後のシーンならタイトルへ戻る）

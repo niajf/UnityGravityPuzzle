@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] CanvasGroup gameOverPanel;
     [SerializeField] CanvasGroup gameClearPanel;
     [SerializeField] CanvasGroup missionPanel;
+    [SerializeField] CanvasGroup pausePanel;
 
     [Header("Clear Text")]
     [SerializeField] TextMeshProUGUI clearTimeText;
@@ -34,6 +35,7 @@ public class UIManager : MonoBehaviour
         {
             GameFlowManager.Instance.OnGameOverOccurred += ShowGameOverPanel;
             GameFlowManager.Instance.OnGameClearOccurred += ShowgameClearGroup;
+            GameFlowManager.Instance.OnPauseOccurred += ControlePauseGroup;
         }
 
         // 重力変化イベントを購読し、初期表示を更新する
@@ -46,6 +48,7 @@ public class UIManager : MonoBehaviour
         // 各パネルを非表示にして開始する
         if (gameOverPanel != null) gameOverPanel.gameObject.SetActive(false);
         if (gameClearPanel != null) gameClearPanel.gameObject.SetActive(false);
+        if (pausePanel != null) pausePanel.gameObject.SetActive(false);
         if (missionPanel != null) ShowMissionGroup().Forget();
     }
 
@@ -65,6 +68,7 @@ public class UIManager : MonoBehaviour
         {
             GameFlowManager.Instance.OnGameOverOccurred -= ShowGameOverPanel;
             GameFlowManager.Instance.OnGameClearOccurred -= ShowgameClearGroup;
+            GameFlowManager.Instance.OnPauseOccurred -= ControlePauseGroup;
         }
 
         if (GravityManager.Instance != null)
@@ -133,6 +137,40 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // UniTask の Forget を使い fire-and-forget で非同期処理を呼び出す
+    void ControlePauseGroup()
+    {
+        if (GameFlowManager.Instance.IsPause)
+            ShowPauseGroupAsync().Forget();
+        else
+            HidePauseGroupAsync().Forget();
+    }
+
+    // HUD を非表示にして、ポーズパネルをフェードインする
+    async UniTask ShowPauseGroupAsync()
+    {
+        if (HUDGroup != null) HUDGroup.alpha = 0;
+
+        if (pausePanel != null)
+        {
+            pausePanel.gameObject.SetActive(true);
+            await CanvasGroupFader.FadeAsync(pausePanel, 0.0f, 1.0f, 0.2f, destroyCancellationToken);
+        }
+    }
+
+    // HUD を非表示にしてク、ポーズパネルをフェードアウトする
+    async UniTask HidePauseGroupAsync()
+    {
+
+        if (pausePanel != null)
+        {
+            await CanvasGroupFader.FadeAsync(pausePanel, 1.0f, 0.0f, 0.2f, destroyCancellationToken);
+            pausePanel.gameObject.SetActive(false);
+        }
+
+        if (HUDGroup != null) HUDGroup.alpha = 1f;
+    }
+
     // Mission UIの表示・非表示を行う
     async UniTask ShowMissionGroup()
     {
@@ -194,7 +232,8 @@ public class UIManager : MonoBehaviour
     {
         await UniTask.WhenAll(
             CanvasGroupFader.FadeAsync(gameOverPanel, 1.0f, 0.0f, fadeOutTime, destroyCancellationToken),
-            CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, fadeOutTime, destroyCancellationToken)
+            CanvasGroupFader.FadeAsync(gameClearPanel, 1.0f, 0.0f, fadeOutTime, destroyCancellationToken),
+            CanvasGroupFader.FadeAsync(pausePanel, 1.0f, 0.0f, fadeOutTime, destroyCancellationToken)
         );
     }
 }

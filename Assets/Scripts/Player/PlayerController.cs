@@ -17,10 +17,10 @@ public class PlayerController : MonoBehaviour
     Vector2 lookInput;
 
     // 購読解除のために参照を保持するデリゲート
-    System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onMovePerformed;
-    System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onMoveCanceled;
-    System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onLookPerformed;
-    System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> _onLookCanceled;
+    System.Action<InputAction.CallbackContext> _onMovePerformed;
+    System.Action<InputAction.CallbackContext> _onMoveCanceled;
+    System.Action<InputAction.CallbackContext> _onLookPerformed;
+    System.Action<InputAction.CallbackContext> _onLookCanceled;
 
     void Awake()
     {
@@ -31,9 +31,9 @@ public class PlayerController : MonoBehaviour
 
         // 再有効化時も正しく購読解除できるようデリゲートを事前に生成する
         _onMovePerformed = ctx => moveInput = ctx.ReadValue<Vector2>();
-        _onMoveCanceled  = _ => moveInput = Vector2.zero;
+        _onMoveCanceled = _ => moveInput = Vector2.zero;
         _onLookPerformed = ctx => lookInput = ctx.ReadValue<Vector2>();
-        _onLookCanceled  = _ => lookInput = Vector2.zero;
+        _onLookCanceled = _ => lookInput = Vector2.zero;
     }
 
     // 有効化時に入力イベントを購読する
@@ -42,9 +42,9 @@ public class PlayerController : MonoBehaviour
         if (InputManager.Instance == null) return;
         var inputActions = InputManager.Instance.Actions;
         inputActions.Player.Move.performed += _onMovePerformed;
-        inputActions.Player.Move.canceled  += _onMoveCanceled;
+        inputActions.Player.Move.canceled += _onMoveCanceled;
         inputActions.Player.Look.performed += _onLookPerformed;
-        inputActions.Player.Look.canceled  += _onLookCanceled;
+        inputActions.Player.Look.canceled += _onLookCanceled;
     }
 
     // 無効化時に入力イベントの購読を解除する
@@ -53,9 +53,9 @@ public class PlayerController : MonoBehaviour
         if (InputManager.Instance == null) return;
         var inputActions = InputManager.Instance.Actions;
         inputActions.Player.Move.performed -= _onMovePerformed;
-        inputActions.Player.Move.canceled  -= _onMoveCanceled;
+        inputActions.Player.Move.canceled -= _onMoveCanceled;
         inputActions.Player.Look.performed -= _onLookPerformed;
-        inputActions.Player.Look.canceled  -= _onLookCanceled;
+        inputActions.Player.Look.canceled -= _onLookCanceled;
     }
 
     void Update()

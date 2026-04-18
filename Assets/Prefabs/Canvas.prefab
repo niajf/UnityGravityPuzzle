@@ -3897,6 +3897,7 @@ MonoBehaviour:
   gameOverPanel: {fileID: 5232901929335759319}
   gameClearPanel: {fileID: 6309144022073401495}
   missionPanel: {fileID: 7794812098464092650}
+  pausePanel: {fileID: 2144605879197329728}
   clearTimeText: {fileID: 2139235902421630611}
   fadeInTime: 0.2
   fadeOutTime: 1
