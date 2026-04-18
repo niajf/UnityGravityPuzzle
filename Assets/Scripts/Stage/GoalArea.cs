@@ -1,8 +1,11 @@
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーがゴールエリアに触れたらステージクリアを通知するスクリプト。
+/// </summary>
 public class GoalArea : MonoBehaviour
 {
-    // プレイヤーが触れたら状態をゲームクリアに変更するメソッド
+    /// <summary>プレイヤーが触れたらステージクリア状態に移行する。</summary>
     void OnTriggerEnter(Collider other)
     {
         // 侵入したのが「Player」タグを持つオブジェクトなら

@@ -12601,6 +12601,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 108207857223458311, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -160
+      objectReference: {fileID: 0}
     - target: {fileID: 5037481698110513037, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -160
@@ -12692,15 +12696,15 @@ PrefabInstance:
     - target: {fileID: 8192727540446192240, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
       propertyPath: HUDGroup
       value: 
-      objectReference: {fileID: 996919047}
+      objectReference: {fileID: 0}
     - target: {fileID: 8192727540446192240, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
       propertyPath: gameOverPanel
       value: 
-      objectReference: {fileID: 996919049}
+      objectReference: {fileID: 0}
     - target: {fileID: 8192727540446192240, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
       propertyPath: gameClearPanel
       value: 
-      objectReference: {fileID: 996919048}
+      objectReference: {fileID: 0}
     - target: {fileID: 8711017897680147080, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -12710,21 +12714,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
---- !u!225 &996919047 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 5280734578900514264, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
-  m_PrefabInstance: {fileID: 996919046}
-  m_PrefabAsset: {fileID: 0}
---- !u!225 &996919048 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 1074218918017768873, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
-  m_PrefabInstance: {fileID: 996919046}
-  m_PrefabAsset: {fileID: 0}
---- !u!225 &996919049 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 3611538389793275564, guid: fc36cb4c2e2464fb2bcd1acc9a147f65, type: 3}
-  m_PrefabInstance: {fileID: 996919046}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1000007064
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,12 @@
 using UnityEngine;
 
+/// <summary>
+/// ドローン敵の AI を制御するスクリプト。
+/// Idle（待機）と Chase（追跡・攻撃）の 2 状態をステートマシンで管理する。
+/// </summary>
 public class DroneAI : MonoBehaviour
 {
-    // AIの状態を定義（ステートマシンの基礎）
+    // AI の状態を定義（ステートマシンの基礎）
     private enum State
     {
         Idle,

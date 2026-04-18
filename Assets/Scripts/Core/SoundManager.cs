@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// ゲームイベントに応じた効果音の再生を管理するスクリプト。
+/// GameFlowManager・GravityManager のイベントを購読し、対応する AudioClip を再生する。
+/// </summary>
 public class SoundManager : MonoBehaviour
 {
     [Header("Sound files")]

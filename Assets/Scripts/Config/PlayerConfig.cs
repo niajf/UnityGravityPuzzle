@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーの移動・カメラ設定を一元管理する ScriptableObject。
+/// Inspector から値を調整することでコードを変更せずにパラメータチューニングできる。
+/// </summary>
 [CreateAssetMenu(fileName = "PlayerConfig", menuName = "GravityPuzzle/PlayerConfig")]
 public class PlayerConfig : ScriptableObject
 {

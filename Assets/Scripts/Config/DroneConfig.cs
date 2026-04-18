@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// ドローン敵の AI・移動・攻撃パラメータを一元管理する ScriptableObject。
+/// Inspector から値を調整することでコードを変更せずにバランス調整できる。
+/// </summary>
 [CreateAssetMenu(fileName = "DroneConfig", menuName = "GravityPuzzle/DroneConfig")]
 public class DroneConfig : ScriptableObject
 {

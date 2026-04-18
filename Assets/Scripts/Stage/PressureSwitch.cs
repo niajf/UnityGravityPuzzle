@@ -1,6 +1,10 @@
 using UnityEngine;
-using UnityEngine.Events; // UnityEventを使うための準備
+using UnityEngine.Events;
 
+/// <summary>
+/// Rigidbody を持つオブジェクトが乗ったときにイベントを発火する圧力スイッチ。
+/// 踏まれたとき／離れたときそれぞれに UnityEvent を割り当てられる。
+/// </summary>
 public class PressureSwitch : MonoBehaviour
 {
     [Header("Events")]
@@ -9,7 +13,7 @@ public class PressureSwitch : MonoBehaviour
 
     Collider onSwitch = null;
 
-    // Is TriggerなColliderに他のRigidbodyが侵入したときに呼ばれる
+    /// <summary>Is Trigger な Collider に他の Rigidbody が侵入したときに呼ばれる。</summary>
     void OnTriggerEnter(Collider other)
     {
         // スイッチが誰にも踏まれていない場合のみ、スイッチを踏まれた処理を行う
@@ -26,7 +30,7 @@ public class PressureSwitch : MonoBehaviour
         }
     }
 
-    // Colliderから出たときに呼ばれる
+    /// <summary>Collider から出たときに呼ばれる。</summary>
     void OnTriggerExit(Collider other)
     {
         // 記録していたオブジェクトがスイッチから離れた場合のみ、処理を実行する

@@ -3,6 +3,10 @@ using TMPro;
 using Cysharp.Threading.Tasks;
 using System.Threading.Tasks;
 
+/// <summary>
+/// ゲーム中の HUD・ゲームオーバー／クリアパネルを管理する UI コントローラー。
+/// GameFlowManager・GravityManager のイベントを購読し、状態に応じて UI を切り替える。
+/// </summary>
 public class UIManager : MonoBehaviour
 {
     [Header("HUD")]
@@ -13,8 +17,9 @@ public class UIManager : MonoBehaviour
     [Header("Panels")]
     [SerializeField] CanvasGroup gameOverPanel;
     [SerializeField] CanvasGroup gameClearPanel;
+    [SerializeField] CanvasGroup missionPanel;
 
-    [Header("Clear Panel")]
+    [Header("Clear Text")]
     [SerializeField] TextMeshProUGUI clearTimeText;
 
     [Header("Fade Setting")]
@@ -24,36 +29,42 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        // ゲーム状態変化イベントを購読する
         if (GameFlowManager.Instance != null)
         {
             GameFlowManager.Instance.OnGameOverOccurred += ShowGameOverPanel;
-            GameFlowManager.Instance.OnGameClearOccurred += ShowGameClearPanel;
+            GameFlowManager.Instance.OnGameClearOccurred += ShowgameClearGroup;
         }
 
+        // 重力変化イベントを購読し、初期表示を更新する
         if (GravityManager.Instance != null)
         {
             GravityManager.Instance.OnGravityChanged += UpdateGravityText;
             UpdateGravityText(GravityManager.Instance.GravityDirection);
         }
 
+        // 各パネルを非表示にして開始する
         if (gameOverPanel != null) gameOverPanel.gameObject.SetActive(false);
         if (gameClearPanel != null) gameClearPanel.gameObject.SetActive(false);
+        if (missionPanel != null) ShowMissionGroup().Forget();
     }
 
     void Update()
     {
+        // 毎フレームタイマー表示を更新する
         if (timerText != null && GameFlowManager.Instance != null)
         {
             timerText.text = $"TIME: {GameFlowManager.Instance.CurrentTime:F2}";
         }
     }
 
+    // 破棄時に購読しているイベントをすべて解除する
     void OnDestroy()
     {
         if (GameFlowManager.Instance != null)
         {
             GameFlowManager.Instance.OnGameOverOccurred -= ShowGameOverPanel;
-            GameFlowManager.Instance.OnGameClearOccurred -= ShowGameClearPanel;
+            GameFlowManager.Instance.OnGameClearOccurred -= ShowgameClearGroup;
         }
 
         if (GravityManager.Instance != null)
@@ -62,6 +73,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // 重力方向ベクトルを文字列ラベルに変換して HUD に反映する
     void UpdateGravityText(Vector3 direction)
     {
         if (gravityDirectionText == null) return;
@@ -80,11 +92,13 @@ public class UIManager : MonoBehaviour
         gravityDirectionText.text = $"GRAVITY: {label}";
     }
 
+    // UniTask の Forget を使い fire-and-forget で非同期処理を呼び出す
     void ShowGameOverPanel()
     {
         ShowGameOverPanelAsync().Forget();
     }
 
+    // HUD を非表示にしてゲームオーバーパネルをフェードインする
     async UniTask ShowGameOverPanelAsync()
     {
         if (HUDGroup != null) HUDGroup.alpha = 0;
@@ -96,12 +110,14 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void ShowGameClearPanel()
+    // UniTask の Forget を使い fire-and-forget で非同期処理を呼び出す
+    void ShowgameClearGroup()
     {
-        ShowGameClearPanelAsync().Forget();
+        ShowgameClearGroupAsync().Forget();
     }
 
-    async UniTask ShowGameClearPanelAsync()
+    // HUD を非表示にしてクリアタイムを表示後、クリアパネルをフェードインする
+    async UniTask ShowgameClearGroupAsync()
     {
         if (HUDGroup != null) HUDGroup.alpha = 0;
 
@@ -117,7 +133,24 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Inspectorのボタンから呼び出す
+    // Mission UIの表示・非表示を行う
+    async UniTask ShowMissionGroup()
+    {
+        // ゲーム開始時は表示しない
+        missionPanel.gameObject.SetActive(false);
+
+        // 指定時間後に表示
+        await UniTask.Delay(500);
+        missionPanel.gameObject.SetActive(true);
+        await CanvasGroupFader.FadeAsync(missionPanel, 0.0f, 1.0f, 0.1f, destroyCancellationToken);
+
+        // 指定時間後に非表示
+        await UniTask.Delay(2000);
+        await CanvasGroupFader.FadeAsync(missionPanel, 1.0f, 0.0f, 1.0f, destroyCancellationToken);
+        missionPanel.gameObject.SetActive(false);
+    }
+
+    /// <summary>Inspector のリトライボタンから呼び出す。</summary>
     public void OnRetryButtonClicked()
     {
         OnRetryButtonClickedAsync().Forget();
@@ -130,6 +163,7 @@ public class UIManager : MonoBehaviour
             await GameFlowManager.Instance.RetryScene();
     }
 
+    /// <summary>Inspector の次ステージボタンから呼び出す。</summary>
     public void OnNextButtonClicked()
     {
         OnNextButtonClickedAsycn().Forget();
@@ -142,6 +176,7 @@ public class UIManager : MonoBehaviour
             await GameFlowManager.Instance.LoadNextScene();
     }
 
+    /// <summary>Inspector のタイトルボタンから呼び出す。</summary>
     public void OnTitleButtonClicked()
     {
         OnTitleButtonClickedAsync().Forget();
@@ -154,6 +189,7 @@ public class UIManager : MonoBehaviour
             await GameFlowManager.Instance.BackTitleScene();
     }
 
+    // 全パネルを同時にフェードアウトしてシーン遷移に備える
     async UniTask AllFadeOutAsync()
     {
         await UniTask.WhenAll(

@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// 圧力スイッチなどのイベントに応じて開閉するドアを制御するスクリプト。
+/// Lerp による滑らかなスライドアニメーションと効果音の再生を担う。
+/// </summary>
 public class Door : MonoBehaviour
 {
     [Header("Sounds")]

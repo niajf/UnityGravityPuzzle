@@ -1,7 +1,11 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;  // シーン遷移に必須
-using Cysharp.Threading.Tasks;      // 非同期処理用
+using UnityEngine.SceneManagement;
+using Cysharp.Threading.Tasks;
 
+/// <summary>
+/// ゲームの進行状態（プレイ中・クリア・ゲームオーバー）とシーン遷移を一元管理するシングルトン。
+/// 状態変化は OnGameOverOccurred / OnGameClearOccurred イベントで購読者へ通知する。
+/// </summary>
 public class GameFlowManager : MonoBehaviour
 {
     public static GameFlowManager Instance { get; private set; }    // GameFlowManagerのシングルトン
@@ -71,7 +75,7 @@ public class GameFlowManager : MonoBehaviour
         OnGameOverOccurred?.Invoke();
     }
 
-    // 次のシーンを読むこむ
+    // 次のシーンを読み込む（最後のシーンならタイトルへ戻る）
     public async UniTask LoadNextScene()
     {
         // シーン読み込み（非同期）
